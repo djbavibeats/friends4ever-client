@@ -18,7 +18,7 @@ export default function EmailAuth({ handleScreenChange }) {
     return (<>
         <div className="flex flex-col items-center gap-4 flex-grow p-4">
             {/* Login Text */}
-            <p className="font-eurostile text-md text-center leading-[1.8rem] tracking-[.2rem]">PLEASE ENTER YOUR EMAIL AND PASSWORD.</p>
+            <p className="font-eurostile text-md text-center leading-[1.8rem] tracking-[.2rem]">PLEASE ENTER YOUR EMAIL AND PASSWORD</p>
             <p className="text-center text-sm font-light">First time here? <span className="underline" onClick={ () => handleScreenChange('email_signup') }>Create an account.</span></p>
             {/* Buttons Text */}
             <label className="relative">

@@ -8,8 +8,8 @@ export default function Intro({ screen, handleScreenChange }) {
             .then(res => res.json())
             .then(data => {
                 console.log(data)
+                handleScreenChange('bracelet')
             })
-        // handleScreenChange('bracelet')
     }
 
     const handleEmailClick = () => {

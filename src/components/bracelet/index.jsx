@@ -1,9 +1,21 @@
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
+import { Html, useProgress } from '@react-three/drei'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faClipboardListCheck } from "@fortawesome/pro-regular-svg-icons"
 
 import FriendshipBracelet from './FriendshipBracelet'
+
+function Loader() {
+    const { progress } = useProgress()
+    return <Html center>
+        <p className="w-screen font-eurostile text-center leading-[1.8rem] tracking-[.2rem] mb-4">
+            Loading ... ({progress}%)
+        </p>
+        <div className={`border-2 w-[100%]`}></div>
+    </Html>
+}
+
 export default function Bracelet() {
     const [ username, setUsername ] = useState('bavier123')
     const [ charmsCollected, setCharmsCollected ] = useState(0)
@@ -11,6 +23,7 @@ export default function Bracelet() {
     const toggleTaskModal = () => {
         console.log('open task modal')
     }
+
     return (<>
     <div className="h-1/6 flex items-center justify-center">
         <p className="font-eurostile text-center leading-[1.8rem] tracking-[.2rem] mb-4">Welcome back,<br/>{ username }</p>
@@ -24,7 +37,9 @@ export default function Bracelet() {
                     position: [ 3, 2, 6 ]
                 } }
             >
-                <FriendshipBracelet />
+                <Suspense fallback={<Loader />}>
+                    <FriendshipBracelet />
+                </Suspense>
             </Canvas>
         </div>
         <div className="h-2/6 flex flex-col items-center justify-center">
