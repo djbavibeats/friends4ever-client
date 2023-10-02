@@ -12,7 +12,7 @@ function Loader() {
         <p className="w-screen font-eurostile text-center leading-[1.8rem] tracking-[.2rem] mb-4">
             Loading ... ({progress}%)
         </p>
-        <div className={`border-2 w-[100%]`}></div>
+        {/* <div className={`border-2 w-[100%]`}></div> */}
     </Html>
 }
 
