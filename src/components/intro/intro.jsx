@@ -5,7 +5,7 @@ export default function Intro({ screen, handleScreenChange }) {
 
     let headers = new Headers()
     const handleSpotifyClick = () => {
-        fetch('http://localhost:5000/spotify/login', {
+        fetch('https://friends4ever-server.onrender.com/spotify/login', {
             mode: 'cors',
             method: 'GET',
             headers: {
