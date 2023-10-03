@@ -3,12 +3,19 @@ import { faEnvelope } from "@fortawesome/pro-regular-svg-icons"
 import { faSpotify } from '@fortawesome/free-brands-svg-icons'
 export default function Intro({ screen, handleScreenChange }) {
 
+    let headers = new Headers()
     const handleSpotifyClick = () => {
-        fetch('https://friends4ever-server.onrender.com/api')
+        fetch('http://localhost:5000/spotify/login', {
+            mode: 'cors',
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            }
+        })
             .then(res => res.json())
             .then(data => {
                 console.log(data)
-                handleScreenChange('bracelet')
             })
     }
 
