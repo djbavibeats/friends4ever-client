@@ -15,27 +15,33 @@ import Bracelet from './components/bracelet'
 // Footer
 function App() {
   const [ screen, setScreen ] = useState('intro')
+  const [ user, setUser ] = useState(null)
 
   const handleScreenChange = (screen) => {
     setScreen(screen)
   }
+
+  const handlePopulateUser = (user) => {
+    setUser(user)
+  }
+  
   return (
     <>
       <div className="app-content h-full">
         <Header />
         { screen === 'intro' &&
         <div className="flex items-center justify-center h-[95%] max-w-lg m-auto">
-          <Intro screen={ screen } handleScreenChange={ handleScreenChange } />
+          <Intro screen={ screen } handleScreenChange={ handleScreenChange } user={ user } handlePopulateUser={ handlePopulateUser } />
         </div>
         }
         { screen === 'email_auth' &&
         <div className="flex items-center justify-center h-[95%] max-w-lg m-auto">
-          <EmailAuth handleScreenChange={ handleScreenChange } />
+          <EmailAuth handleScreenChange={ handleScreenChange } user={ user } handlePopulateUser={ handlePopulateUser }  />
         </div>
         }
         { screen === 'email_signup' &&
         <div className="flex items-center justify-center h-[95%] max-w-lg m-auto">
-          <EmailSignup handleScreenChange={ handleScreenChange } />
+          <EmailSignup handleScreenChange={ handleScreenChange } user={ user } handlePopulateUser={ handlePopulateUser }  />
         </div>
         }
         { screen === 'loading' &&
@@ -43,7 +49,7 @@ function App() {
         }
         { screen === 'bracelet' &&
         <div className="h-[90%] max-w-lg m-auto">
-          <Bracelet />
+          <Bracelet user={ user } handlePopulateUser={ handlePopulateUser } />
         </div>
         }
       </div>

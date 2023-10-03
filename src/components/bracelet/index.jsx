@@ -1,4 +1,4 @@
-import { useState, Suspense } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Html, useProgress } from '@react-three/drei'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -12,13 +12,16 @@ function Loader() {
         <p className="w-screen font-eurostile text-center leading-[1.8rem] tracking-[.2rem] mb-4">
             Loading ... ({progress}%)
         </p>
-        {/* <div className={`border-2 w-[100%]`}></div> */}
     </Html>
 }
 
-export default function Bracelet() {
-    const [ username, setUsername ] = useState('bavier123')
+export default function Bracelet({ user, handlePopulateUser }) {
+    const [ username, setUsername ] = useState('')
     const [ charmsCollected, setCharmsCollected ] = useState(0)
+
+    useEffect(() => {
+        console.log(user)
+    }, [ user ])
 
     const toggleTaskModal = () => {
         console.log('open task modal')
@@ -26,7 +29,9 @@ export default function Bracelet() {
 
     return (<>
     <div className="h-1/6 flex items-center justify-center">
-        <p className="font-eurostile text-center leading-[1.8rem] tracking-[.2rem] mb-4">Welcome back,<br/>{ username }</p>
+        { user && 
+            <p className="font-eurostile text-center leading-[1.8rem] tracking-[.2rem] mb-4">Welcome back,<br/>{ user.display_name }</p>
+        }
     </div>
         <div className="h-3/6">
             <Canvas

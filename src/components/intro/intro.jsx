@@ -1,22 +1,84 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEnvelope } from "@fortawesome/pro-regular-svg-icons"
 import { faSpotify } from '@fortawesome/free-brands-svg-icons'
-export default function Intro({ screen, handleScreenChange }) {
+import { useState, useEffect } from 'react'
 
-    let headers = new Headers()
-    const handleSpotifyClick = () => {
-        fetch('https://friends4ever-server.onrender.com/spotify/login', {
-            mode: 'cors',
-            method: 'GET',
-            headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
+const getTokenFromUrl = () => {
+        if (window.location.href.includes('?')) {
+            return window.location.href
+                .split('?')[1]
+                .split('&')
+                .reduce((initial, item) => {
+                    let parts = item.split('=')
+                    initial[parts[0]] = decodeURIComponent(parts[1])
+                    return initial
+            }, {})
+        }
+    // }
+}
+
+export default function Intro({ screen, handleScreenChange, user, handlePopulateUser }) {
+    const [ spotifyToken, setSpotifyToken ] = useState("")
+    const [ loggedIn, setLoggedIn ] = useState(false)
+
+    // Production
+    // const url = 'https://friends4ever-server.onrender.com'
+    // Development
+    const url = 'http://localhost:5000'
+
+    useEffect(() => {
+        const spotifyToken = getTokenFromUrl()
+        var access_token = ''
+        var token_type = ''
+        if (localStorage.getItem('spotify_refresh')) {
+            console.log('yes!')
+            const refresh_token = localStorage.getItem('spotify_refresh')
+            fetch(`${url}/spotify/refresh?refresh_token=${refresh_token}`)
+                .then(resp => resp.json())
+                .then(data => {
+                    console.log('Welcome back, successful fetch!', data)
+                    access_token = data.data.access_token
+                    token_type = data.data.token_type
+                    fetch(`${url}/spotify/get-user?access_token=${access_token}&token_type=${token_type}`)
+                        .then(resp => resp.json())
+                        .then(data => {
+                            console.log('Found the user', data)
+                            handlePopulateUser(data.data)
+                            handleScreenChange('bracelet')
+                        })
+                })
+        } else {
+            if (spotifyToken && !loggedIn) {
+                setSpotifyToken(spotifyToken)
+                // use spotify api
+                setLoggedIn(true)
+                fetch(`${url}/spotify/callback?code=${spotifyToken.code}&state=${spotifyToken.state}`)
+                    .then(resp => resp.json())
+                    .then(data => {
+                        console.log('Successful fetch!', data)
+                        if (data.status === 200) {
+                            localStorage.setItem('spotify_refresh', data.data.refresh_token)
+                            access_token = data.data.access_token
+                            token_type = data.data.token_type
+                            fetch(`${url}/spotify/get-user?access_token=${access_token}&token_type=${token_type}`)
+                                .then(resp => resp.json())
+                                .then(data => {
+                                    console.log('Found the user', data)
+                                    handlePopulateUser(data.data)
+                                    handleScreenChange('bracelet')
+                                })
+                            handleScreenChange('bracelet')
+                        } else {
+                            console.log('hold on...')
+                        }
+                    })
             }
-        })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data)
-            })
+        }
+
+    }, [])
+
+    const handleSpotifyClick = () => {
+        window.open(`${url}/spotify/login`, '_self')
     }
 
     const handleEmailClick = () => {
