@@ -10,7 +10,8 @@ export default function FriendshipBracelet(props) {
 
     useEffect(() => {
         console.log()
-        setMaterialColor(props.user.braceletConfig.baseColor)
+        // setMaterialColor(props.user.braceletConfig.baseColor)
+        setMaterialColor('#d0cece')
     }, [])
 
     useFrame(() => {
@@ -24,7 +25,7 @@ export default function FriendshipBracelet(props) {
             intensity={ 5.0 }
         />
         <ambientLight intensity={ 0.4 } />
-        <group ref={ bracelet } {...props} dispose={null} scale={ 1.4 } rotation={[ -.125, 0, 0.125 ]}>
+        <group ref={ bracelet } {...props} dispose={null} scale={ 0.65 } rotation={[ -.125, 0, 0.125 ]} position={[ 0, 0.3, 0 ]}>
             <mesh
                 castShadow
                 receiveShadow
@@ -34,7 +35,7 @@ export default function FriendshipBracelet(props) {
                 <meshStandardMaterial 
                     color={ materialColor } 
                     metalness={ 1 }
-                    roughness={ 0.25 }
+                    roughness={ 0.2 }
                 />
 
                 <mesh
@@ -49,7 +50,7 @@ export default function FriendshipBracelet(props) {
                     <meshStandardMaterial 
                         color={ materialColor } 
                         metalness={ 1.0 }
-                        roughness={ 0.25 }
+                        roughness={ 0.2 }
                     />
                 </mesh>
             </mesh>

@@ -29,12 +29,14 @@ export default function Bracelet({ user, handlePopulateUser, authMethod }) {
     }
 
     return (<>
-    <div className="h-1/6 flex items-center justify-center">
+    <div className="h-1/6 pt-8 px-8 flex items-center justify-center relative z-10">
         { user && 
             <p className="font-eurostile text-center leading-[1.8rem] tracking-[.2rem] mb-4">Welcome back,<br/>{ user.displayName }</p>
         }
     </div>
-        <div className="h-3/6">
+        {/* Spacer */}
+        <div className="h-3/6"></div>
+        <div className="w-screen absolute h-screen top-0 left-0">
             <Canvas
                 camera={ { 
                     fov: 45,
@@ -46,11 +48,13 @@ export default function Bracelet({ user, handlePopulateUser, authMethod }) {
                 <Suspense fallback={<Loader />}>
                     <FriendshipBracelet user={ user } />
                 </Suspense>
-                <Environment preset="night">
+                <Environment 
+                    preset="city"
+                >
                 </Environment>
             </Canvas>
         </div>
-        <div className="h-2/6 flex flex-col items-center justify-center">
+        <div className="h-2/6 flex flex-col items-center justify-center relative z-10 p-8">
             <p className="font-eurostile text-2xl text-center leading-[1.8rem] tracking-[.2rem]">{ charmsCollected } / 5</p>
             <p className="font-eurostile text-xs text-center leading-[1.8rem] tracking-[.2rem] mb-4">CHARMS COLLECTED</p>
             <button className="flex items-center justify-center border-2 border-white p-2 w-64" onClick={ toggleTaskModal }>
