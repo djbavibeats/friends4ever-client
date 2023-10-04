@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faClipboardListCheck } from "@fortawesome/pro-regular-svg-icons"
 
 import FriendshipBracelet from './FriendshipBracelet'
+import TaskList from './TaskList.jsx'
 
 function Loader() {
     const { progress } = useProgress()
@@ -17,16 +18,22 @@ function Loader() {
 
 export default function Bracelet({ user, handlePopulateUser, authMethod }) {
     const [ username, setUsername ] = useState('')
+    const [ taskListVisible, setTaskListVisible ] = useState(false)
     const [ charmsCollected, setCharmsCollected ] = useState(0)
 
     useEffect(() => {
         console.log(user)
         console.log(authMethod)
+
+        setCharmsCollected(user.charms.filter((charm) => charm.completed === true).length)
     }, [ user ])
 
     const toggleTaskModal = () => {
         console.log('open task modal')
+        setTaskListVisible(!taskListVisible)
     }
+
+
 
     return (<>
     <div className="h-1/6 pt-8 px-8 flex items-center justify-center relative z-10">
@@ -61,5 +68,8 @@ export default function Bracelet({ user, handlePopulateUser, authMethod }) {
                 VIEW AVAILABLE TASKS <FontAwesomeIcon className="ml-2" icon={ faClipboardListCheck } />
             </button>
         </div>
+        { taskListVisible &&
+            <TaskList visible={ taskListVisible } user={ user } toggleTaskModal={ toggleTaskModal } />
+        }
     </>)
 }

@@ -33,6 +33,16 @@
     font-weight: 900;
 }
 
+.task-list-modal {
+    background: url('/images/task-bg.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin: 0 auto;
+    aspect-ratio: 1080 / 1920;
+    border-radius: 5px;
+    box-shadow: rgba(0,0,0,.5) 0px 4px 15px 5px;
+
+}
 
 body {
     background: #D53148;
