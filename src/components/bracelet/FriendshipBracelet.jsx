@@ -1,10 +1,17 @@
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { OrbitControls, useGLTF } from '@react-three/drei'
+import { OrbitControls, useGLTF, Environment, Lightformer } from '@react-three/drei'
+import * as THREE from 'three'
 
 export default function FriendshipBracelet(props) {
+    const [ materialColor, setMaterialColor ] = useState('blue')
   const { nodes, materials } = useGLTF("./models/temp-bracelet.gltf");
     const bracelet = useRef()
+
+    useEffect(() => {
+        console.log()
+        setMaterialColor(props.user.braceletConfig.baseColor)
+    }, [])
 
     useFrame(() => {
         bracelet.current.rotation.y += 0.01
@@ -12,23 +19,39 @@ export default function FriendshipBracelet(props) {
     return (<>
         <OrbitControls />
         <directionalLight />
-        <ambientLight intensity={ 0.5 } />
-        <group ref={ bracelet } {...props} dispose={null} scale={ 1.4 } rotation-x={ .125 }>
+        <pointLight 
+            position={[ 0.0, -0.5, -1.0 ]}
+            intensity={ 5.0 }
+        />
+        <ambientLight intensity={ 0.4 } />
+        <group ref={ bracelet } {...props} dispose={null} scale={ 1.4 } rotation={[ -.125, 0, 0.125 ]}>
             <mesh
                 castShadow
                 receiveShadow
                 geometry={nodes.Bracelet.geometry}
                 material={nodes.Bracelet.material}
-            >
-                <mesh
-                castShadow
-                receiveShadow
-                geometry={nodes.T_Clasp.geometry}
-                material={nodes.T_Clasp.material}
-                position={[-0.144, 0.029, 0.032]}
-                rotation={[0.003, 0.005, 0.002]}
-                scale={[50.001, 50, 50]}
+            >  
+                <meshStandardMaterial 
+                    color={ materialColor } 
+                    metalness={ 1 }
+                    roughness={ 0.25 }
                 />
+
+                <mesh
+                    castShadow
+                    receiveShadow
+                    geometry={nodes.T_Clasp.geometry}
+                    material={nodes.T_Clasp.material}
+                    position={[-0.144, 0.029, 0.032]}
+                    rotation={[0.003, 0.005, 0.002]}
+                    scale={[50.001, 50, 50]}
+                >
+                    <meshStandardMaterial 
+                        color={ materialColor } 
+                        metalness={ 1.0 }
+                        roughness={ 0.25 }
+                    />
+                </mesh>
             </mesh>
         </group>
     </>)

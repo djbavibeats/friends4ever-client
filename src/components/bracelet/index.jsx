@@ -1,6 +1,6 @@
 import { useState, useEffect, Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { Html, useProgress } from '@react-three/drei'
+import { Html, useProgress, Environment } from '@react-three/drei'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faClipboardListCheck } from "@fortawesome/pro-regular-svg-icons"
 
@@ -15,12 +15,13 @@ function Loader() {
     </Html>
 }
 
-export default function Bracelet({ user, handlePopulateUser }) {
+export default function Bracelet({ user, handlePopulateUser, authMethod }) {
     const [ username, setUsername ] = useState('')
     const [ charmsCollected, setCharmsCollected ] = useState(0)
 
     useEffect(() => {
         console.log(user)
+        console.log(authMethod)
     }, [ user ])
 
     const toggleTaskModal = () => {
@@ -30,7 +31,7 @@ export default function Bracelet({ user, handlePopulateUser }) {
     return (<>
     <div className="h-1/6 flex items-center justify-center">
         { user && 
-            <p className="font-eurostile text-center leading-[1.8rem] tracking-[.2rem] mb-4">Welcome back,<br/>{ user.display_name }</p>
+            <p className="font-eurostile text-center leading-[1.8rem] tracking-[.2rem] mb-4">Welcome back,<br/>{ user.displayName }</p>
         }
     </div>
         <div className="h-3/6">
@@ -39,12 +40,14 @@ export default function Bracelet({ user, handlePopulateUser }) {
                     fov: 45,
                     near: 0.1,
                     far: 200,
-                    position: [ 3, 2, 6 ]
+                    position: [ 0, 2, - 6 ]
                 } }
             >
                 <Suspense fallback={<Loader />}>
-                    <FriendshipBracelet />
+                    <FriendshipBracelet user={ user } />
                 </Suspense>
+                <Environment preset="night">
+                </Environment>
             </Canvas>
         </div>
         <div className="h-2/6 flex flex-col items-center justify-center">

@@ -16,13 +16,15 @@ import Bracelet from './components/bracelet'
 function App() {
   const [ screen, setScreen ] = useState('intro')
   const [ user, setUser ] = useState(null)
+  const [ authMethod, setAuthMethod ] = useState('')
 
   const handleScreenChange = (screen) => {
     setScreen(screen)
   }
 
-  const handlePopulateUser = (user) => {
+  const handlePopulateUser = (user, authMethod) => {
     setUser(user)
+    setAuthMethod(authMethod)
   }
   
   return (
@@ -31,17 +33,17 @@ function App() {
         <Header />
         { screen === 'intro' &&
         <div className="flex items-center justify-center h-[95%] max-w-lg m-auto">
-          <Intro screen={ screen } handleScreenChange={ handleScreenChange } user={ user } handlePopulateUser={ handlePopulateUser } />
+          <Intro screen={ screen } handleScreenChange={ handleScreenChange } user={ user } handlePopulateUser={ handlePopulateUser } authMethod={ authMethod } />
         </div>
         }
         { screen === 'email_auth' &&
         <div className="flex items-center justify-center h-[95%] max-w-lg m-auto">
-          <EmailAuth handleScreenChange={ handleScreenChange } user={ user } handlePopulateUser={ handlePopulateUser }  />
+          <EmailAuth handleScreenChange={ handleScreenChange } user={ user } handlePopulateUser={ handlePopulateUser } authMethod={ authMethod }  />
         </div>
         }
         { screen === 'email_signup' &&
         <div className="flex items-center justify-center h-[95%] max-w-lg m-auto">
-          <EmailSignup handleScreenChange={ handleScreenChange } user={ user } handlePopulateUser={ handlePopulateUser }  />
+          <EmailSignup handleScreenChange={ handleScreenChange } user={ user } handlePopulateUser={ handlePopulateUser } authMethod={ authMethod }  />
         </div>
         }
         { screen === 'loading' &&
@@ -49,7 +51,7 @@ function App() {
         }
         { screen === 'bracelet' &&
         <div className="h-[90%] max-w-lg m-auto">
-          <Bracelet user={ user } handlePopulateUser={ handlePopulateUser } />
+          <Bracelet user={ user } handlePopulateUser={ handlePopulateUser } authMethod={ authMethod } />
         </div>
         }
       </div>

@@ -1,16 +1,43 @@
 import { useRef, useState } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faLock, faEnvelope } from "@fortawesome/pro-regular-svg-icons"
-export default function EmailAuth({ handleScreenChange }) {
+export default function EmailAuth({ screen, handleScreenChange, user, handlePopulateUser }) {
     const email = useRef()
     const password = useRef()
     const [ errorMessage, setErrorMessage ] = useState(null)
 
+    // Production
+    const url = 'https://friends4ever-server.onrender.com'
+    // Development
+    // const url = 'http://localhost:5000'
+
     const handleEmailAuthentication = () => {
-        console.log("Email: " + email.current.value)
-        console.log("Password: " + password.current.value)
         if (email.current.value && password.current.value) {
-            handleScreenChange('bracelet')
+            fetch(`${url}/database/users/get-email-user`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email.current.value,
+                    password: password.current.value
+                })
+            })
+            .then(resp => resp.json())
+            .then(data => {
+                if (data.status === 400) {
+                    setErrorMessage('Looks like you created your account using Spotify.')
+                } else if (data.status === 404) {
+                    setErrorMessage('No user with that email / password combination found.')
+                } else if (data.status === 403) {
+                    setErrorMessage('Incorrect password!')
+                } else if (data.status === 200) {
+                    localStorage.setItem('dbv_id', data.user._id)
+                    localStorage.setItem('auth_method', data.user.authMethod)
+                    handlePopulateUser(data.user, data.user.authMethod)
+                    handleScreenChange('bracelet')
+                }
+            })
         } else {
             setErrorMessage('Please enter a valid email!')
         }

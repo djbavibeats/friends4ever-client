@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faLock, faUser, faEnvelope, faCircleX, faCircleCheck } from "@fortawesome/pro-regular-svg-icons"
 
-export default function EmailSignup({ handleScreenChange }) {
+export default function EmailSignup({ screen, handleScreenChange, user, handlePopulateUser }) {
     const email = useRef()
     const name = useRef()
     const password = useRef()
@@ -11,6 +11,11 @@ export default function EmailSignup({ handleScreenChange }) {
     const [ errorMessage, setErrorMessage ] = useState(null)
     const [ passwordMatch, setPasswordMatch ] = useState(false)
 
+    // Production
+    const url = 'https://friends4ever-server.onrender.com'
+    // Development
+    // const url = 'http://localhost:5000'
+
     const handleEmailSignup = () => {
         console.log("Email: " + email.current.value)
         console.log("Name: " + name.current.value)
@@ -18,7 +23,31 @@ export default function EmailSignup({ handleScreenChange }) {
         console.log("Confirm Password: " + confirmPassword.current.value)
         if (email.current.value && name.current.value && password.current.value && confirmPassword.current.value) {
             if (password.current.value === confirmPassword.current.value) {
-                handleScreenChange('bracelet')
+                // handleScreenChange('bracelet')
+                fetch(`${url}/database/users/create-email-user`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        displayName: name.current.value,
+                        email: email.current.value,
+                        password: password.current.value,
+                        authMethod: 'email'
+                    })
+                })
+                    .then(resp => resp.json())
+                    .then(data => {
+                        if (data.status === 400) {
+                            setErrorMessage('Account with that email already exists!')
+                        } else {
+                            localStorage.setItem('dbv_id', data.user._id)
+                            localStorage.setItem('auth_method', data.user.authMethod)
+                            handlePopulateUser(data.user, data.user.authMethod)
+                            handleScreenChange('bracelet')
+                        }
+
+                    })
             } else {
                 setErrorMessage('Passwords must match!')
             }

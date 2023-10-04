@@ -30,23 +30,46 @@ export default function Intro({ screen, handleScreenChange, user, handlePopulate
         const spotifyToken = getTokenFromUrl()
         var access_token = ''
         var token_type = ''
-        if (localStorage.getItem('spotify_refresh')) {
-            console.log('yes!')
-            const refresh_token = localStorage.getItem('spotify_refresh')
-            fetch(`${url}/spotify/refresh?refresh_token=${refresh_token}`)
-                .then(resp => resp.json())
-                .then(data => {
-                    console.log('Welcome back, successful fetch!', data)
-                    access_token = data.data.access_token
-                    token_type = data.data.token_type
-                    fetch(`${url}/spotify/get-user?access_token=${access_token}&token_type=${token_type}`)
-                        .then(resp => resp.json())
-                        .then(data => {
-                            console.log('Found the user', data)
-                            handlePopulateUser(data.data)
-                            handleScreenChange('bracelet')
-                        })
-                })
+
+        // If a user has this, it means they have an ID associated with their browser
+        // Next step is to see what their authentication method is
+        if (localStorage.getItem('dbv_id')) {
+            console.log('user already is logged in in this browser')
+
+            // This will check if the user is logged in via email
+            if (localStorage.getItem('auth_method') === 'email') {
+                console.log('email account')
+                fetch(`${url}/database/users/get-by-id?user_id=${localStorage.getItem('dbv_id')}`)
+                    .then(resp => resp.json())
+                    .then(data => {
+                        handlePopulateUser(data.user, data.user.authMethod)
+                        handleScreenChange('bracelet')
+                    })
+
+            // This will check if the user is logged in via Spotify, if they are then it will fetch their Spotify account, and then their DB account
+            } else if (localStorage.getItem('auth_method') === 'spotify' && localStorage.getItem('spotify_refresh')) {
+                const refresh_token = localStorage.getItem('spotify_refresh')
+                fetch(`${url}/spotify/refresh?refresh_token=${refresh_token}`)
+                    .then(resp => resp.json())
+                    .then(data => {
+                        access_token = data.data.access_token
+                        token_type = data.data.token_type
+                        fetch(`${url}/spotify/get-user?access_token=${access_token}&token_type=${token_type}`)
+                            .then(resp => resp.json())
+                            .then(data => {  
+                                fetch(`${url}/database/users/get-spotify-user?spotifyId=${data.data.id}`)
+                                    .then(resp => resp.json())
+                                    .then(data => {
+                                        console.log(data)
+                                        localStorage.setItem('dbv_id', data.user._id)
+                                        localStorage.setItem('auth_method', data.user.authMethod)
+                                        handlePopulateUser(data.user, data.user.authMethod)
+                                        handleScreenChange('bracelet')
+                                    })
+                            })
+                    })
+            }
+        // If a user is not logged in
         } else {
             if (spotifyToken && !loggedIn) {
                 setSpotifyToken(spotifyToken)
@@ -55,24 +78,63 @@ export default function Intro({ screen, handleScreenChange, user, handlePopulate
                 fetch(`${url}/spotify/callback?code=${spotifyToken.code}&state=${spotifyToken.state}`)
                     .then(resp => resp.json())
                     .then(data => {
-                        console.log('Successful fetch!', data)
                         if (data.status === 200) {
+                            const refreshToken = data.data.refresh_token
                             localStorage.setItem('spotify_refresh', data.data.refresh_token)
                             access_token = data.data.access_token
                             token_type = data.data.token_type
                             fetch(`${url}/spotify/get-user?access_token=${access_token}&token_type=${token_type}`)
                                 .then(resp => resp.json())
                                 .then(data => {
-                                    console.log('Found the user', data)
-                                    handlePopulateUser(data.data)
-                                    handleScreenChange('bracelet')
+                                    const email = data.data.email
+                                    const displayName = data.data.display_name
+                                    const spotifyId = data.data.id
+
+                                    // Check if user has an account already
+                                    fetch(`${url}/database/users/get-spotify-user?spotifyId=${data.data.id}`)
+                                        .then(resp => resp.json())
+                                        .then(data => {
+                                            if (!data.user) {
+                                                fetch(`${url}/database/users/create-spotify-user`, {
+                                                    method: 'POST',
+                                                    headers: {
+                                                        'Content-Type': 'application/json'
+                                                    },
+                                                    body: JSON.stringify({
+                                                        email: email,
+                                                        displayName: displayName,
+                                                        spotifyRefreshToken: refreshToken,
+                                                        spotifyId: spotifyId,
+                                                        authMethod: 'spotify'
+                                                    })
+                                                })
+                                                    .then(resp => resp.json())
+                                                    .then(data => {
+                                                        localStorage.setItem('dbv_id', data.user._id)
+                                                        localStorage.setItem('auth_method', data.user.authMethod)
+                                                        handlePopulateUser(data.user, data.user.authMethod)
+                                                        handleScreenChange('bracelet')
+                                                        // handlePopulateUser(data.data, 'spotify')
+                                                    })
+                                            } else {
+                                                localStorage.setItem('dbv_id', data.user._id)
+                                                localStorage.setItem('auth_method', data.user.authMethod)
+                                                handlePopulateUser(data.user, data.user.authMethod)
+                                                handleScreenChange('bracelet')
+                                            }
+                                        })
                                 })
-                            handleScreenChange('bracelet')
                         } else {
-                            console.log('hold on...')
+                            console.log('Something went wrong with the Spotify Authentication')
                         }
                     })
             }
+        }
+
+        if (localStorage.getItem('spotify_refresh')) {
+            
+        } else {
+            
         }
 
     }, [])
