@@ -10,8 +10,8 @@ const Task = ({ task }) => {
                 <p className="text-xs pt-2">{ task.description }</p>
             </div>
             <div className="col-span-1 flex items-center justify-center">
-                <div className="border-2 border-black py-3 px-1 rounded-xl bg-[rgba(0,0,0,0.075)]">
-                    <p className="font-eurostile text-[10px]">GO TO TASK</p>
+                <div className="border-2 border-black py-3 px-1 rounded-xl bg-[rgba(0,0,0,0.075)] hover:cursor-pointer">
+                    <p className="font-eurostile text-[10px] text-center">GO TO TASK</p>
                 </div>
             </div>
         
@@ -26,9 +26,9 @@ export default function TaskList({ user, toggleTaskModal }) {
     }
     return (<>
         <div className="flex items-center absolute top-0 left-0 h-screen w-screen p-2 bg-[rgba(0,0,0,0.5)] z-20">
-            <div className="modal-container w-full">
-                <div className="relative task-list-modal text-black pt-10">
-                    <div className="absolute top-3 right-3 text-md border-2 border-black rounded-full px-[10px] py-1 font-bold bg-[rgba(0,0,0,0.25)]" onClick={ close }>
+            <div className="modal-container w-[95%] max-w-[500px] min-w-[330px] m-auto">
+                <div className="relative task-list-modal text-black pt-14">
+                    <div className="absolute top-3 right-3 text-md border-2 border-black rounded-full px-[10px] py-1 font-bold bg-[rgba(0,0,0,0.25)] hover:cursor-pointer" onClick={ close }>
                         <FontAwesomeIcon icon={faX} />
                     </div>
                     <p className="font-eurostile text-center text-2xl leading-[1.8rem] tracking-[.2rem] mb-4">TASK LIST</p>

@@ -1,15 +1,43 @@
 
 export default function Header() {
+    async function share() {
+        const shareData = {
+            title: "Chase Atlantic",
+            text: "E-Friendship Bracelet",
+            url: "https://chaseatlantic.com",
+        }
+
+        if (navigator.share && navigator.canShare(shareData)) {
+            try {
+                await navigator.share(shareData);
+                console.log("Shared successfully")
+            } catch (err) {
+                console.log(`Error: ${err}`)
+            }
+         } else {
+            // do something else like copying the data to the clipboard
+            console.log(`Can't share in this browser`)
+         }
+    }
+
+    function openMenu() {
+        window.open('https://found.ee/ca-mamacita')
+    }
+
+    function openWebsite() {
+        window.open('https://chaseatlantic.com')
+    }
+
     return (<>
-        <div className="flex justify-between w-full items-center p-4">
+        <div className="flex justify-between w-full items-center p-4 relative z-10">
             {/* Share Icon */}
             <div className="text-center">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 hover:cursor-pointer" onClick={ share }>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
                 </svg>  
             </div>
             <div className="m-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" width="208.6" height="9.8" viewBox="0 0 596 28" fill="none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="208.6" height="9.8" viewBox="0 0 596 28" fill="none" onClick={ openWebsite } className="hover:cursor-pointer">
                 <path d="M35.0636 11.7075C34.5736 8.47159 31.579 6.72637 26.461 6.72637C19.9275 6.72637 16.3884 9.23513 16.3884 13.8163C16.3884 18.3975 19.9275 20.8699 26.461 20.8699C31.1435 20.8699 34.0836 19.4519 35.0092 16.616H52.5954C51.0165 23.815 42.1417 27.6327 26.461 27.6327C8.92924 27.6327 0 22.906 0 13.8163C0 4.72664 8.92924 0 26.461 0C42.9039 0 51.9421 4.21762 52.4865 11.7075H35.0636Z" fill="white"/>
                 <path d="M53.9196 26.9418V0.690816H69.1646V9.78051H86.5331V0.690816H101.778V26.9418H86.5331V16.3251H69.1646V26.9418H53.9196Z" fill="white"/>
                 <path d="M100.151 26.9418L117.192 0.690816H136.521L152.419 26.9418H135.922L134.615 24.3604H117.9L116.485 26.9418H100.151ZM121.494 17.8885H131.24L126.503 8.65339L121.494 17.8885Z" fill="white"/>
@@ -27,7 +55,7 @@ export default function Header() {
             </div>
             {/* Menu Icon */}
             <div className="text-center">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 hover:cursor-pointer" onClick={ openMenu }>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
 

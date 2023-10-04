@@ -68,7 +68,7 @@ export default function EmailSignup({ screen, handleScreenChange, user, handlePo
             {/* Login Text */}
             <p className="font-eurostile text-md text-center leading-[1.8rem] tracking-[.2rem]">NEW ACCOUNT</p>
             <p className="text-center text-sm font-light">Please enter the following information, all fields are required.</p>
-            <p className="text-center text-sm font-light">Already have an account? <span className="underline" onClick={ () => handleScreenChange('email_auth') }>Login.</span></p>
+            <p className="text-center text-sm font-light">Already have an account? <span className="underline hover:cursor-pointer" onClick={ () => handleScreenChange('email_auth') }>Login.</span></p>
             {/* Buttons Text */}
             <label className="relative">
                 <input type="text" ref={ email } className="flex bg-transparent placeholder-white outline-none  text-white items-center justify-center border-2 p-2 w-64" placeholder="Email"></input>
