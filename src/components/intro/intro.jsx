@@ -148,7 +148,7 @@ export default function Intro({ screen, handleScreenChange, user, handlePopulate
     }
 
     return (<>
-        <div className="flex flex-col items-center p-4 gap-4 flex-grow">
+        <div className="flex flex-col items-center p-4 px-4 gap-4 flex-grow">
             {/* Login Text */}
             <p className="font-eurostile text-md text-center leading-[1.8rem] tracking-[.2rem]">LOGIN TO VIEW YOUR FRIENDSHIP BRACELET</p>
             {/* Buttons Text */}
@@ -159,10 +159,10 @@ export default function Intro({ screen, handleScreenChange, user, handlePopulate
                 LOGIN WITH EMAIL <FontAwesomeIcon className="ml-2" icon={ faEnvelope }  />
             </button>
             {/* Terms & Conditions Text */}
-            <p className="text-center text-[10px] font-light">
-                By connecting, you agree to the Terms & Conditions and Privacy Policy 
-                and you agree to receive email communication from Chase Atlantic and Fearless Records. 
-                For more information on how we use your data, please click here.
+            <p className="text-center text-[9px] font-light">
+                BY CONNECTING, YOU AGREE TO THE TERMS & CONDITIONS AND PRIVACY POLICY
+                AND YOU AGREE TO RECEIVE EMAIL COMMUNICATION FORM CHASE ATLANTIC AND FEARLESS RECORDS.
+                FOR MORE INFORMATION ON HOW WE USE YOUR DATA, PLEASE CLICK HERE.
             </p>
         </div>
     </>)

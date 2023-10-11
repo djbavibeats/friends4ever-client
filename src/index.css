@@ -34,22 +34,43 @@
 }
 
 .task-list-modal {
-    background: url('/images/task-bg.png');
-    background-size: contain;
-    background-repeat: no-repeat;
     margin: 0 auto;
-    aspect-ratio: 1080 / 1920;
-    border-radius: 5px;
     box-shadow: rgba(0,0,0,.5) 0px 4px 15px 5px;
 
 }
 
 body {
-    background: #D53148;
+    /* background: #D53148; */
+    background: #000000;
     color: white;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+}
+
+@media screen and (max-width: 1023px) {
+    body {
+        background-image: url('/images/mobile-bg.jpg');
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    body {
+        background-image: url('/images/desktop-bg.jpg');
+    }
 }
 
 .app-content {
     height: 100vh;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 61.46%, rgba(255, 255, 255, 0.25) 80.1%, rgba(255, 255, 255, 0.25) 86.98%, rgba(255, 255, 255, 0.00) 100%) !important;
+    /* background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 61.46%, rgba(255, 255, 255, 0.25) 80.1%, rgba(255, 255, 255, 0.25) 86.98%, rgba(255, 255, 255, 0.00) 100%) !important; */
+}
+
+.unavailable-blur {
+    filter: blur(5px);
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
 }

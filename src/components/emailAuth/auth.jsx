@@ -46,7 +46,7 @@ export default function EmailAuth({ screen, handleScreenChange, user, handlePopu
         <div className="flex flex-col items-center gap-4 flex-grow p-4">
             {/* Login Text */}
             <p className="font-eurostile text-md text-center leading-[1.8rem] tracking-[.2rem]">PLEASE ENTER YOUR EMAIL AND PASSWORD</p>
-            <p className="text-center text-sm font-light">First time here? <span className="underline hover:cursor-pointer" onClick={ () => handleScreenChange('email_signup') }>Create an account.</span></p>
+            <p className="text-center text-sm font-light">FIRST TIME HERE? <span className="underline hover:cursor-pointer" onClick={ () => handleScreenChange('email_signup') }>CREATE AN ACCOUNT.</span></p>
             {/* Buttons Text */}
             <label className="relative">
                 <input type="text" ref={ email } className="flex bg-transparent placeholder-white outline-none  text-white items-center justify-center border-2 p-2 w-64" placeholder="EMAIL"></input>
@@ -61,14 +61,14 @@ export default function EmailAuth({ screen, handleScreenChange, user, handlePopu
                     { errorMessage }
                 </p>
             }
-            <button className="flex items-center justify-center bg-white text-chasered border-2 border-white p-2 w-64" onClick={ handleEmailAuthentication }>
+            <button className="flex items-center justify-center bg-white text-black border-2 border-white p-2 w-64" onClick={ handleEmailAuthentication }>
                 ENTER
             </button>
             {/* Terms & Conditions Text */}
-            <p className="text-center text-[10px] font-light">
-                By connecting, you agree to the Terms & Conditions and Privacy Policy 
-                and you agree to receive email communication from Chase Atlantic and Fearless Records. 
-                For more information on how we use your data, please click here.
+            <p className="text-center text-[9px] font-light">
+                BY CONNECTING, YOU AGREE TO THE TERMS & CONDITIONS AND PRIVACY POLICY
+                AND YOU AGREE TO RECEIVE EMAIL COMMUNICATION FORM CHASE ATLANTIC AND FEARLESS RECORDS.
+                FOR MORE INFORMATION ON HOW WE USE YOUR DATA, PLEASE CLICK HERE.
             </p>
         </div>
     </>)
