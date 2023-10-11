@@ -16,7 +16,7 @@ const url = 'https://friends4ever-server.onrender.com'
 function Loader() {
     const { progress } = useProgress()
     return <Html center>
-        <p className="w-screen font-eurostile text-center leading-[1.8rem] tracking-[.2rem] mb-4">
+        <p className="w-screen h-[100%] items-center justify-center flex font-eurostile text-center leading-[1.8rem] tracking-[.2rem] mb-4">
             Loading ... <br />({Math.trunc(progress)}%)
         </p>
     </Html>

@@ -33,7 +33,7 @@ const Mission = ({ mission, user, handleUpdateUser, followMission, listenMission
     return (<>
         <div className={`grid py-2 grid-cols-4 relative mb-4`}>
             { !mission.available &&
-                <div className="absolute flex flex-col items-center justify-center m-auto z-20 h-full w-full">
+                <div className="absolute flex flex-col items-center justify-center m-auto z-50 h-full w-full">
                     <FontAwesomeIcon className="text-2xl mb-3" icon={ faLock }  />
                     <p className="font-eurostile text-xs">MISSION LOCKED</p>
                 </div>

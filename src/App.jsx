@@ -51,17 +51,17 @@ function App() {
       <div className="app-content h-full">
         <Header />
         { screen === 'intro' &&
-        <div className="flex items-center justify-center h-[95%] max-w-lg m-auto">
+        <div className="flex items-center justify-center h-[85%] max-w-lg m-auto">
           <Intro screen={ screen } handleScreenChange={ handleScreenChange } user={ user } handlePopulateUser={ handlePopulateUser } authMethod={ authMethod } missions={ missions } />
         </div>
         }
         { screen === 'email_auth' &&
-        <div className="flex items-center justify-center h-[95%] max-w-lg m-auto">
+        <div className="flex items-center justify-center h-[85%] max-w-lg m-auto">
           <EmailAuth handleScreenChange={ handleScreenChange } user={ user } handlePopulateUser={ handlePopulateUser } authMethod={ authMethod }  missions={ missions } />
         </div>
         }
         { screen === 'email_signup' &&
-        <div className="flex items-center justify-center h-[95%] max-w-lg m-auto">
+        <div className="flex items-center justify-center h-[85%] max-w-lg m-auto">
           <EmailSignup handleScreenChange={ handleScreenChange } user={ user } handlePopulateUser={ handlePopulateUser } authMethod={ authMethod }  missions={ missions } />
         </div>
         }
@@ -69,7 +69,7 @@ function App() {
           <Loading />
         }
         { screen === 'bracelet' &&
-        <div className="h-[90%] max-w-lg m-auto">
+        <div className="h-[85%] max-w-lg m-auto">
           <Bracelet user={ user } handlePopulateUser={ handlePopulateUser } handleUpdateUser={ handleUpdateUser } authMethod={ authMethod } missions={ missions } />
         </div>
         }
