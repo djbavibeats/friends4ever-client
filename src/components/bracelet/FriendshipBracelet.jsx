@@ -97,15 +97,16 @@ export default function FriendshipBracelet(props) {
                 */
 
                 // Method 2: Share image using Navigator Share API
-                /* 
+                 
                 const file = [ dataURLtoFile(test.src, `${props.user.displayName}-E-BRACELET.png`) ]
                 share("E-Friendship Bracelet", file)
-                */
+                
                 
                 // Method 3: Open the image in a new tab
+                /*
                 var w = window.open("");
                 w.document.write(test.outerHTML);
-
+                */
                 
             })
     }
