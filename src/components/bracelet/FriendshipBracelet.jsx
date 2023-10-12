@@ -8,29 +8,112 @@ export default function FriendshipBracelet(props) {
   const { nodes, materials } = useGLTF("./models/temp-bracelet.gltf");
     const bracelet = useRef()
     const { gl } = useThree()
-    // const sharePanel = useRef()
+    const sharePanel = useRef()
 
     useEffect(() => {
-        console.log()
-        // setMaterialColor(props.user.braceletConfig.baseColor)
         setMaterialColor('#d0cece')
     }, [])
 
-    // document.getElementById('yep').addEventListener('click', () => {
-    //     console.log('yep!')
-    // })
+    useEffect(() => {
+        props.childFunc.current = alertUser
+    }, [ props.childFunc.current ])
+
+    function alertUser() {
+        shareCanvas()
+    }
+
+    function mergeImageURIs(images) {
+        return new Promise( (resolve, reject) => {
+            var canvas = document.createElement('canvas')
+            canvas.width = 750
+            canvas.height = 1050
+            Promise.all(images.map((imageObj, index) => add2Canvas(canvas, imageObj)))
+                .then(() => { resolve(canvas.toDataURL('image/png'), reject) })
+        })
+    }
+
+    function add2Canvas(canvas, imageObj) {
+        return new Promise( (resolve, reject ) => {
+            if (!imageObj || typeof imageObj != 'object') return reject()
+            var x = imageObj.x && canvas.width ? (imageObj.x >= 0 ? imageObj.x : canvas.width + imageObj.x) : 0
+            var y = imageObj.y && canvas.height ? (imageObj.y >=0 ? imageObj.y : canvas.height + imageObj.y) : 0
+            var image = new Image()
+            image.onload = function() {
+                canvas.getContext('2d').drawImage(this, x, y, imageObj.width, imageObj.height)
+                resolve()
+            }
+
+            image.src = imageObj.src
+        })
+    }
+
+    function dataURLtoFile(dataurl, filename) {
+        var arr = dataurl.split(","),
+            mimeType = arr[0].match(/:(.*?);/)[1],
+            decodedData = atob(arr[1]),
+            lengthOfDecodedData = decodedData.length,
+            u8array = new Uint8Array(lengthOfDecodedData)
+        while (lengthOfDecodedData--) {
+            u8array[lengthOfDecodedData] = decodedData.charCodeAt(lengthOfDecodedData)
+        }
+        return new File([u8array], filename, { type: mimeType })
+    }
 
     function shareCanvas() {
-         var img = new Image()
-        img.src = gl.domElement.toDataURL()
-        console.log(gl.domElement.toDataURL())
-        var w = window.open('', '')
-        w.document.body.appendChild(img)
+        // Three JS Canvas Image
+        var braceletimg = new Image()
+        braceletimg.style.border = "2px solid blue"
+        braceletimg.src = gl.domElement.toDataURL()
+
+        // Pokemon Card Template Image
+        var cardimg = new Image()
+        cardimg.src = './images/pokemon-template.png'
+
+        var images = [
+            { src: braceletimg.src, x: 125, y: 75, width: 500, height: 500 },
+            { src: cardimg.src, x: 0, y: 0, width: 750, height: 1050 }
+        ]
+
+        mergeImageURIs(images)
+            .then(resp => {
+                var test = new Image
+                test.src = resp
+
+                const file = dataURLtoFile(test.src, "testing.png")
+
+                if (navigator.canShare && navigator.canShare({ files: [ file ] })) {
+                    navigator.share({
+                      title: 'E-Friendship Bracelet',
+                      text: `Check out my bracelet!`,
+                      files: [ file ]
+                    })
+                } else {
+                    console.log('your system does not support sharing files')
+                }
+              
+
+                // var w = window.open('', '')
+                // w.document.body.appendChild(test)
+
+                // if (navigator.canShare && navigator.canShare({ files: [ file ] })) {
+                //     navigator.share({
+                //         files: [ file ],
+                //         title,
+                //         text
+                //     }).then(() => { console.log('Share was successful.') })
+                //     .catch((error) => { console.log('Sharing failed', error) })
+                // } else {
+                //     console.log('Your system does not support sharing files.')
+                // }
+            })
     }
+
+    
 
     useFrame(() => {
         bracelet.current.rotation.y += 0.01
     })
+
     return (<>
         <OrbitControls />
         <directionalLight />
@@ -39,7 +122,7 @@ export default function FriendshipBracelet(props) {
             intensity={ 5.0 }
         />
         <ambientLight intensity={ 0.4 } />
-        <group ref={ bracelet } {...props} dispose={null} scale={ 0.65 } rotation={[ -.125, 0, 0.125 ]} position={[ 0, 0.3, 0 ]}>
+        <group ref={ bracelet } {...props} dispose={null} scale={ 1.125 } rotation={[ -.125, 0, 0.125 ]} position={[ 0, 0, 0 ]}>
             <mesh
                 castShadow
                 receiveShadow

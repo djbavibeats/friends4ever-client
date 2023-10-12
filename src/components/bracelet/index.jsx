@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, Suspense } from 'react'
 import { Canvas, useThree } from '@react-three/fiber'
 import { Html, useProgress, Environment } from '@react-three/drei'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faClipboardListCheck } from "@fortawesome/pro-regular-svg-icons"
+import { faClipboardListCheck, faCamera } from "@fortawesome/pro-regular-svg-icons"
 
 import FriendshipBracelet from './FriendshipBracelet'
 import TestBracelet from '../test/TestBracelet'
@@ -22,11 +22,13 @@ function Loader() {
     </Html>
 }
 
-export default function Bracelet({ user, handlePopulateUser, handleUpdateUser, authMethod, missions }) {
+export default function Bracelet({ user, handlePopulateUser, handleUpdateUser, authMethod, missions, passDown }) {
     const [ username, setUsername ] = useState('')
     const [ missionsModalVisible, setMissionsModalVisible ] = useState(false)
     const [ missionsCompleted, setMissionsCompleted ] = useState(0)
     const canvas = useRef()
+
+    const childFunc = useRef(null)
 
     useEffect(() => {
         setMissionsCompleted(user.missions.filter((mission) => mission.completed === true).length)
@@ -43,8 +45,8 @@ export default function Bracelet({ user, handlePopulateUser, handleUpdateUser, a
         }
     </div>
         {/* Spacer */}
-        <div className="h-3/6"></div>
-        <div className="w-screen absolute h-screen top-0 left-0">
+        {/* <div className="h-3/6"></div> */}
+        <div className="aspect-square w-full relative">
             <Canvas
                 ref={ canvas }
                 id="canvas-wrapper-id"
@@ -53,17 +55,24 @@ export default function Bracelet({ user, handlePopulateUser, handleUpdateUser, a
                     fov: 45,
                     near: 0.1,
                     far: 200,
-                    position: [ 0, 2, - 6 ]
+                    position: [ 0, 2, - 6 ],
+                    aspect: 1 / 1
                 } }
             >
                 <Suspense fallback={<Loader />}>
-                    <FriendshipBracelet user={ user } />
+                    <FriendshipBracelet user={ user } childFunc={ childFunc } />
                 </Suspense>
                 <Environment 
                     preset="city"
                 >
                 </Environment>
             </Canvas>
+            <div 
+                className="absolute bottom-0 right-0 text-2xl pr-4 pb-0 hover:cursor-pointer flex items-end"
+                onClick={() => childFunc.current()}
+            >
+                <FontAwesomeIcon icon={ faCamera } />
+            </div>
         </div>
         <div className="h-2/6 flex flex-col items-center justify-center relative z-10 p-8">
             <p className="font-eurostile text-2xl text-center leading-[1.8rem] tracking-[.2rem]">{ missionsCompleted } / 5</p>
