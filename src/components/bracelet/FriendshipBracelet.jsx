@@ -124,8 +124,6 @@ export default function FriendshipBracelet(props) {
         }
     }
 
-    
-
     useFrame(() => {
         bracelet.current.rotation.y += 0.01
     })
