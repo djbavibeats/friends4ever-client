@@ -60,7 +60,7 @@ export default function Bracelet({ user, handlePopulateUser, handleUpdateUser, a
                 } }
             >
                 <Suspense fallback={<Loader />}>
-                    <FriendshipBracelet user={ user } childFunc={ childFunc } />
+                    <FriendshipBracelet user={ user } childFunc={ childFunc } missionsCompleted={ missionsCompleted } />
                 </Suspense>
                 <Environment 
                     preset="city"

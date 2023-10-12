@@ -28,7 +28,9 @@ export default function FriendshipBracelet(props) {
             canvas.width = 750
             canvas.height = 1050
             Promise.all(images.map((imageObj, index) => add2Canvas(canvas, imageObj)))
-                .then(() => { resolve(canvas.toDataURL('image/png'), reject) })
+                .then(() => { 
+                    resolve(canvas.toDataURL('image/png'), reject) 
+                })
         })
     }
 
@@ -40,9 +42,16 @@ export default function FriendshipBracelet(props) {
             var image = new Image()
             image.onload = function() {
                 canvas.getContext('2d').drawImage(this, x, y, imageObj.width, imageObj.height)
+
+                // Draw Name
+                canvas.getContext('2d').font = "24px Eurostile"
+                canvas.getContext('2d').fillText(`${props.user.displayName.toUpperCase()}`, 190, 75)
+
+                // Draw Number of Misisons
+                canvas.getContext('2d').font = "24px Eurostile"
+                canvas.getContext('2d').fillText(`${props.missionsCompleted} / 5 MISSIONS COMPLETED`, 85, 595)
                 resolve()
             }
-
             image.src = imageObj.src
         })
     }
@@ -88,8 +97,14 @@ export default function FriendshipBracelet(props) {
                 */
 
                 // Method 2: Share image using Navigator Share API
-                const file = [ dataURLtoFile(test.src, `${props.user.displayName}-e-bracelet.png`) ]
+                /* 
+                const file = [ dataURLtoFile(test.src, `${props.user.displayName}-E-BRACELET.png`) ]
                 share("E-Friendship Bracelet", file)
+                */
+                
+                // Method 3: Open the image in a new tab
+                var w = window.open("");
+                w.document.write(test.outerHTML);
 
                 
             })
