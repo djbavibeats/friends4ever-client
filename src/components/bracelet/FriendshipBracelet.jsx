@@ -89,18 +89,16 @@ export default function FriendshipBracelet(props) {
 
                 // Method 2: Share image using Navigator Share API
                 const file = [ dataURLtoFile(test.src, `${props.user.displayName}-e-bracelet.png`) ]
-                console.log(file[0])
-                share("E-Friendship Bracelet", "Check out my bracelet!", file)
+                share("E-Friendship Bracelet", file)
 
                 
             })
     }
 
-    const share = async (title, text, file) => {
+    const share = async (title, file) => {
         const data = {
             files: file,
-            title: title,
-            text: text
+            title: title
         }
         try {
             if (!(navigator.canShare(data))) {
