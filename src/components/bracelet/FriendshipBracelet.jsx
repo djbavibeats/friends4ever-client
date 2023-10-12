@@ -89,16 +89,27 @@ export default function FriendshipBracelet(props) {
 
                 // Method 2: Share image using Navigator Share API
                 const file = [ dataURLtoFile(test.src, `${props.user.displayName}-e-bracelet.png`) ]
+                console.log(file[0])
+                share("E-Friendship Bracelet", "Check out my bracelet!", file)
 
-                if (navigator.share && navigator.canShare({ files: file })) {
-                    navigator.share({
-                      title: 'E-Friendship Bracelet',
-                      files: file
-                    })
-                } else {
-                    console.log('your system does not support sharing files')
-                }
+                
             })
+    }
+
+    const share = async (title, text, file) => {
+        const data = {
+            files: file,
+            title: title,
+            text: text
+        }
+        try {
+            if (!(navigator.canShare(data))) {
+                throw new Error("Cannot share data.", data)
+            }
+            await navigator.share(data)
+        } catch (err) {
+            console.log(err.name, err.message)
+        }
     }
 
     
