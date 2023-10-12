@@ -97,8 +97,7 @@ export default function FriendshipBracelet(props) {
 
     const share = async (title, file) => {
         const data = {
-            files: file,
-            title: title
+            files: file
         }
         try {
             if (!(navigator.canShare(data))) {
