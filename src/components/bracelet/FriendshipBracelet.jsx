@@ -78,18 +78,21 @@ export default function FriendshipBracelet(props) {
             .then(resp => {
                 var test = new Image
                 test.src = resp
+                var link = document.createElement('a')
+                link.href = test.src
+                link.download = `${props.user.displayName}-e-bracelet.png`
+                link.click()
 
-                const file = dataURLtoFile(test.src, "testing.png")
+                // const file = [ dataURLtoFile(test.src, "testing.png") ]
 
-                if (navigator.canShare && navigator.canShare({ files: [ file ] })) {
-                    navigator.share({
-                      title: 'E-Friendship Bracelet',
-                      text: `Check out my bracelet!`,
-                      files: [ file ]
-                    })
-                } else {
-                    console.log('your system does not support sharing files')
-                }
+                // if (navigator.share && navigator.canShare({ files: file })) {
+                //     navigator.share({
+                //       title: 'E-Friendship Bracelet',
+                //       files: file
+                //     })
+                // } else {
+                //     console.log('your system does not support sharing files')
+                // }
               
 
                 // var w = window.open('', '')
