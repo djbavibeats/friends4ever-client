@@ -78,36 +78,26 @@ export default function FriendshipBracelet(props) {
             .then(resp => {
                 var test = new Image
                 test.src = resp
+
+                // Method 1: Download the image from browser
+                /*
                 var link = document.createElement('a')
                 link.href = test.src
                 link.download = `${props.user.displayName}-e-bracelet.png`
                 link.click()
+                */
 
-                // const file = [ dataURLtoFile(test.src, "testing.png") ]
+                // Method 2: Share image using Navigator Share API
+                const file = [ dataURLtoFile(test.src, `${props.user.displayName}-e-bracelet.png`) ]
 
-                // if (navigator.share && navigator.canShare({ files: file })) {
-                //     navigator.share({
-                //       title: 'E-Friendship Bracelet',
-                //       files: file
-                //     })
-                // } else {
-                //     console.log('your system does not support sharing files')
-                // }
-              
-
-                // var w = window.open('', '')
-                // w.document.body.appendChild(test)
-
-                // if (navigator.canShare && navigator.canShare({ files: [ file ] })) {
-                //     navigator.share({
-                //         files: [ file ],
-                //         title,
-                //         text
-                //     }).then(() => { console.log('Share was successful.') })
-                //     .catch((error) => { console.log('Sharing failed', error) })
-                // } else {
-                //     console.log('Your system does not support sharing files.')
-                // }
+                if (navigator.share && navigator.canShare({ files: file })) {
+                    navigator.share({
+                      title: 'E-Friendship Bracelet',
+                      files: file
+                    })
+                } else {
+                    console.log('your system does not support sharing files')
+                }
             })
     }
 
