@@ -86,6 +86,7 @@ export default function Map() {
     return (<>
         <div className="flex items-center flex-col">
             <div ref={mapContainer} className="map-container mb-8" />
+            {/*
             <p className="mb-2">User Coordinates</p>
             <div className="flex mb-8">
                 <label className="relative">
@@ -109,6 +110,7 @@ export default function Map() {
                     Manually Set Position
                 </button>
             </div>
+            */}
         </div>
     </>)
 }

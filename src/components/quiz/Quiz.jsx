@@ -31,7 +31,6 @@ export default function Quiz() {
     }
     return (<>
         { questions.map((question, index) => {
-            console.log(question)
             return <div key={ index } className="w-[90%] m-auto p-2 border-2 uppercase mb-2">
                 {/* Title */}
                 {/* <div>{ question.title }</div> */}

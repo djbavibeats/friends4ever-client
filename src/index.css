@@ -81,10 +81,10 @@ body {
 
 .map-container {
     width: 325px;
-    height: 500px;
+    height: 325px;
 }
 
 .mapboxgl-canvas {
     width: 325px !important;
-    height: 500px !important;
+    height: 325px !important;
 }

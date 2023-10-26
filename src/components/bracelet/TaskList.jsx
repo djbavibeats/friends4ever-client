@@ -187,8 +187,8 @@ export default function TaskList({ user, missions, toggleMissionsModal, handleUp
 
     return (<>
         <div className="flex items-center absolute top-0 left-0 h-full w-screen p-1 bg-[rgba(0,0,0,0.25)] z-20 overflow-hidden">
-            <div className="bg-black text-white p-2 modal-container w-[98%] max-w-[500px] min-w-[330px] max-h-[90vh] m-auto overflow-hidden h-[98%]">
-                <div className="relative task-list-modal pt-14 border-2 border-color-white h-full">
+            <div className="bg-black text-white pt-4 modal-container w-[98%] max-w-[500px] min-w-[330px] max-h-[700px] m-auto overflow-hidden h-[98%]">
+                <div className="relative task-list-modal pt-4 border-2 border-color-white h-[684px]">
                     <div className="absolute top-3 right-3 text-xs border-2 border-white rounded-full px-[6px] py-1 font-bold bg-[rgba(0,0,0,0.25)] hover:cursor-pointer" onClick={ toggleMissionsModal }>
                         <div className="font-eurostile">X</div>
                     </div>
