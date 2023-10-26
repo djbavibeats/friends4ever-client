@@ -74,3 +74,17 @@ body {
     width: 0px;
     background: transparent; /* make scrollbar transparent */
 }
+
+.mapboxgl-ctrl-attrib-inner {
+    display: none;
+}
+
+.map-container {
+    width: 325px;
+    height: 500px;
+}
+
+.mapboxgl-canvas {
+    width: 325px !important;
+    height: 500px !important;
+}

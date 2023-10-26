@@ -3,15 +3,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
 import YouTube from "react-youtube"
 
+import Map from '../map/Map'
+import Quiz from '../quiz/Quiz'
+
 // Production
 const url = 'https://friends4ever-server.onrender.com'
 // Development
 // const url = 'http://localhost:5000'
 
-const Mission = ({ mission, user, handleUpdateUser, followMission, listenMission, watchMission }) => {
+const Mission = ({ mission, user, handleUpdateUser, followMission, listenMission, watchMission, findMission, createMission }) => {
     const [ missionDetails, setMissionDetails ] = useState(null)
 
     function executemission(name) {
+        console.log(name)
         switch (name) {
             case ('follow'):
                 followMission(user, mission)
@@ -21,6 +25,12 @@ const Mission = ({ mission, user, handleUpdateUser, followMission, listenMission
                 break
             case ('watch'):
                 watchMission(user, mission)
+                break
+            case ('find'):
+                findMission(user, mission)
+                break
+            case ('create'):
+                createMission(user, mission)
                 break
             default:
                 console.log('default...')
@@ -76,7 +86,9 @@ const Mission = ({ mission, user, handleUpdateUser, followMission, listenMission
 }
 
 export default function TaskList({ user, missions, toggleMissionsModal, handleUpdateUser }) {
+    const [ activeScreen, setActiveScreen ] = useState('missions')
     const [ videoPlaying, setVideoPlaying ] = useState(false)
+    const [ mapActive, setMapActive ] = useState(false)
     function followMission(user, mission) {
         if (user.authMethod === "spotify") {
                 // Follow Chase Atlantic
@@ -162,60 +174,95 @@ export default function TaskList({ user, missions, toggleMissionsModal, handleUp
     }
 
     function watchMission(user, mission) {
-        setVideoPlaying(true)
+        setActiveScreen('video')
     }
 
+    function findMission(user, mission) {
+        setActiveScreen('map')
+    }
+
+    function createMission(user, mission) {
+        setActiveScreen('create')
+    }
 
     return (<>
         <div className="flex items-center absolute top-0 left-0 h-full w-screen p-1 bg-[rgba(0,0,0,0.25)] z-20 overflow-hidden">
-            <div className="bg-black text-white p-2 modal-container w-[98%] max-w-[500px] min-w-[330px] m-auto overflow-scroll h-[98%]">
+            <div className="bg-black text-white p-2 modal-container w-[98%] max-w-[500px] min-w-[330px] max-h-[90vh] m-auto overflow-hidden h-[98%]">
                 <div className="relative task-list-modal pt-14 border-2 border-color-white h-full">
                     <div className="absolute top-3 right-3 text-xs border-2 border-white rounded-full px-[6px] py-1 font-bold bg-[rgba(0,0,0,0.25)] hover:cursor-pointer" onClick={ toggleMissionsModal }>
                         <div className="font-eurostile">X</div>
                     </div>
                     <p className="font-eurostile text-center text-2xl leading-[1.8rem] tracking-[.2rem] mb-0">MISSIONS</p>
-                    { !videoPlaying ?
+                    {
+                        activeScreen === "missions" &&
                         <>
-                        <div className="h-[2px] w-[90%] m-auto bg-black mb-4"></div>            
-                        <div className="px-2">
-                            { missions.map((mission, index) => {
-                                return <Mission 
-                                key={ index } 
-                                user={ user } 
-                                mission={ mission } 
-                                handleUpdateUser={ handleUpdateUser } 
-                                followMission={ followMission } 
-                                listenMission={ listenMission }
-                                watchMission={ watchMission }
-                            />
-                            })}
-                        </div>    
-                        <div className="h-[2px] w-[90%] m-auto bg-black mb-4"></div> 
+                            <div className="h-[2px] w-[90%] m-auto bg-black mb-4"></div>            
+                            <div className="px-2">
+                                { missions.map((mission, index) => {
+                                    return <Mission 
+                                    key={ index } 
+                                    user={ user } 
+                                    mission={ mission } 
+                                    handleUpdateUser={ handleUpdateUser } 
+                                    followMission={ followMission } 
+                                    listenMission={ listenMission }
+                                    watchMission={ watchMission }
+                                    findMission={ findMission }
+                                    createMission={ createMission }
+                                />
+                                })}
+                            </div>    
+                            <div className="h-[2px] w-[90%] m-auto bg-black mb-4"></div> 
                         </>
-                    : <>
-                        <div className="w-full mt-8 flex flex-col items-center justify-center max-w-full">
-                            <p className="font-eurostile text-xs mb-4">MAMACITA OFFICIAL LYRIC VIDEO</p>
-                            <YouTube 
-                                videoId="Ppu8TB3Mc-Q"
-                                opts={{
-                                    width: "325",
-                                    height: "325"
-                                }}
-                                onPlay={() => {
-                                    console.log('video playing')
-                                }}
-                                onPause={() => {
-                                    console.log('video paused')
-                                }}    
-                                onEnd={() => {
-                                    alert('you finished the video!')
-                                }}
-                            />
-                            <div className="text-center w-40 border-2 border-white py-1 px-1 rounded-full bg-[rgba(0,0,0,0.075)] hover:cursor-pointer" onClick={ () => setVideoPlaying(false)}>
-                                <p className="font-eurostile text-[9px] text-center">CLOSE VIDEO</p>
+                    }
+                    {
+                        activeScreen === "video" &&
+                        <>
+                            <div className="w-full mt-8 flex flex-col items-center justify-center max-w-full">
+                                <p className="font-eurostile text-xs mb-4">MAMACITA OFFICIAL LYRIC VIDEO</p>
+                                <YouTube 
+                                    videoId="Ppu8TB3Mc-Q"
+                                    opts={{
+                                        width: "325",
+                                        height: "325"
+                                    }}
+                                    onPlay={() => {
+                                        console.log('video playing')
+                                    }}
+                                    onPause={() => {
+                                        console.log('video paused')
+                                    }}    
+                                    onEnd={() => {
+                                        alert('you finished the video!')
+                                    }}
+                                />
+                                <div className="text-center w-40 border-2 border-white py-1 px-1 rounded-full bg-[rgba(0,0,0,0.075)] hover:cursor-pointer" onClick={ () => setActiveScreen('missions') }>
+                                    <p className="font-eurostile text-[9px] text-center">GO BACK</p>
+                                </div>
                             </div>
-                        </div>
-                    </>
+                        </>
+                    }
+                    { activeScreen === "map" &&
+                        <>
+                            <div className="w-full mt-8 flex flex-col items-center justify-center max-w-full">
+                            <Map />
+                            <div className="text-center w-40 border-2 border-white py-1 px-1 rounded-full bg-[rgba(0,0,0,0.075)] hover:cursor-pointer" onClick={ () => setActiveScreen('missions') }>
+                                <p className="font-eurostile text-[9px] text-center">GO BACK</p>
+                            </div>
+                            </div>
+                        </>
+
+                    }
+                    {
+                        activeScreen === "create" &&
+                        <>
+                            <div className="w-full mt-8 flex flex-col items-center justify-center max-w-full">
+                            <Quiz />
+                            <div className="text-center w-40 border-2 border-white py-1 px-1 rounded-full bg-[rgba(0,0,0,0.075)] hover:cursor-pointer" onClick={ () => setActiveScreen('missions') }>
+                                <p className="font-eurostile text-[9px] text-center">GO BACK</p>
+                            </div>
+                            </div>
+                        </>
                     }
                 </div>
             </div>
