@@ -10,7 +10,7 @@ import drops from './drops.js'
 mapboxgl.workerClass = MapboxGLWorker
 mapboxgl.accessToken = 'pk.eyJ1IjoianVzdGludm9sdGNyZWF0aXZlIiwiYSI6ImNrczY2eDFpYTBieXEzMGxoaDF1Nmd2aXgifQ.0HoSQyn8pH5coK4IxPRhrQ';
 
-export default function Map() {
+export default function Find() {
     const [ lat, setLat ] = useState(null)
     const [ lng, setLng ] = useState(null)
     const mapContainer = useRef(null)
@@ -70,6 +70,8 @@ export default function Map() {
     }, [ latitude, longitude ])
 
     function manuallySetPosition() {
+        // Test Coordinates for Barclays Center
+        // -73.976, 40.684
         if (map) {
             map.current.easeTo({ 
                 center: [ manualLng.current.value, manualLat.current.value ], 
@@ -78,15 +80,20 @@ export default function Map() {
             })
         }
         user.current.setLngLat([ manualLng.current.value, manualLat.current.value ])
-        drops.map((drop, index) => {
-            getDistance(manualLat.current.value, manualLng.current.value, drop.latitude, drop.longitude, drop.name, "manual")
-        })
+        for (var i = 0; i < drops.length; i++) {
+            const distance = getDistance(manualLat.current.value, manualLng.current.value, drops[i].latitude, drops[i].longitude, drops[i].name)
+            console.log(distance)
+            if (distance.inRange === true) { 
+                alert(`${distance.message}`)
+                break
+            }
+        }
     }
 
     return (<>
-        <div className="flex items-center flex-col">
+        <div className="flex items-center flex-col px-2 w-full">
             <div ref={mapContainer} className="map-container mb-8" />
-            {/*
+            
             <p className="mb-2">User Coordinates</p>
             <div className="flex mb-8">
                 <label className="relative">
@@ -97,7 +104,7 @@ export default function Map() {
                 </label>
             </div>
             <p className="mb-2">Set Coordinates</p>
-            <div className="flex mb-4">
+            <div className="flex mb-2">
                 <label className="relative">
                     <input type="text" ref={ manualLng } className="flex text-center bg-transparent placeholder-white outline-none  text-white items-center justify-center border-2 p-2 w-32" placeholder={ longitude ? longitude.toFixed(3) : '' }></input>
                 </label>
@@ -105,12 +112,14 @@ export default function Map() {
                     <input type="text" ref={ manualLat } className="flex text-center bg-transparent placeholder-white outline-none  items-center justify-center border-2 p-2 w-32" placeholder={ latitude ? latitude.toFixed(3) : '' }></input>
                 </label>
             </div>
+            <p className="mb-0">Test Coordinates for Barclays Center</p>
+            <p className="mb-4">-73.976, 40.684</p>
             <div className="mb-8">
                 <button className="flex items-center justify-center bg-white text-black border-2 border-white p-2 w-64" onClick={ manuallySetPosition }>
                     Manually Set Position
                 </button>
             </div>
-            */}
+           
         </div>
     </>)
 }

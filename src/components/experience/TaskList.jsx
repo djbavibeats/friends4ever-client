@@ -1,17 +1,17 @@
 import { faLock } from "@fortawesome/pro-regular-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
-import YouTube from "react-youtube"
 
-import Map from '../map/Map'
-import Quiz from '../quiz/Quiz'
+import Create from './missions/create/Create'
+import Watch from './missions/watch/Watch'
+import Find from './missions/find/Find'
 
 // Production
-const url = 'https://friends4ever-server.onrender.com'
+// const url = 'https://friends4ever-server.onrender.com'
 // Development
-// const url = 'http://localhost:5000'
+const url = 'http://localhost:5000'
 
-const Mission = ({ mission, user, handleUpdateUser, followMission, listenMission, watchMission, findMission, createMission }) => {
+const Mission = ({ mission, user, handleUpdateUser, followMission, createMission, watchMission, findMission }) => {
     const [ missionDetails, setMissionDetails ] = useState(null)
 
     function executemission(name) {
@@ -20,17 +20,14 @@ const Mission = ({ mission, user, handleUpdateUser, followMission, listenMission
             case ('follow'):
                 followMission(user, mission)
                 break
-            case ('listen'):
-                listenMission(user, mission)
+            case ('create'):
+                createMission(user, mission)
                 break
             case ('watch'):
                 watchMission(user, mission)
                 break
             case ('find'):
                 findMission(user, mission)
-                break
-            case ('create'):
-                createMission(user, mission)
                 break
             default:
                 console.log('default...')
@@ -154,41 +151,26 @@ export default function TaskList({ user, missions, toggleMissionsModal, handleUp
             }
     }
 
-    function listenMission(user, mission) {
-        console.log('listen up!')
-        if (user.authMethod === "spotify") {
-            // Play Mamacita
-            fetch(`${url}/spotify/play-mamacita`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    spotifyId: user.spotifyId,
-                    spotifyRefreshToken: user.spotifyRefreshToken 
-                })
-            })
-        } else {
-            console.log('user did not authenticate with spotify')
-        }  
-    }
-
-    function watchMission(user, mission) {
-        setActiveScreen('video')
-    }
-
-    function findMission(user, mission) {
-        setActiveScreen('map')
-    }
-
     function createMission(user, mission) {
         setActiveScreen('create')
     }
 
+    function watchMission(user, mission) {
+        setActiveScreen('watch')
+    }
+
+    function findMission(user, mission) {
+        setActiveScreen('find')
+    }
+
+
     return (<>
-        <div className="flex items-center absolute top-0 left-0 h-full w-screen p-1 bg-[rgba(0,0,0,0.25)] z-20 overflow-hidden">
-            <div className="bg-black text-white pt-4 modal-container w-[98%] max-w-[500px] min-w-[330px] max-h-[700px] m-auto overflow-hidden h-[98%]">
-                <div className="relative task-list-modal pt-4 border-2 border-color-white h-[684px]">
+        <div className="flex fixed top-0 left-0 right-0 h-full w-screen p-1 bg-[rgba(0,0,0,1)] md:bg-[rgba(0,0,0,0.25)] z-20 overflow-x-hidden overflow-y-auto">
+        {/* <div className="fixed top-0 left-0 right-0 z-50 w-full overflow-x-hidden overflow-y-auto md:inset-0 h-full max-h-full"> */}
+
+            <div className="relative top-0 left-0 right-0 bottom-0 flex items-start md:items-center text-white modal-container w-[100%] max-w-full">
+            {/* <div className="relative w-full max-w-2xl max-h-full p-4"> */}
+                <div className="relative bg-black task-list-modal min-h-full md:min-h-[700px] py-4 px-2 border-2 border-color-white md:w-[100%] md:max-w-[500px] min-w-[330px]">
                     <div className="absolute top-3 right-3 text-xs border-2 border-white rounded-full px-[6px] py-1 font-bold bg-[rgba(0,0,0,0.25)] hover:cursor-pointer" onClick={ toggleMissionsModal }>
                         <div className="font-eurostile">X</div>
                     </div>
@@ -197,7 +179,7 @@ export default function TaskList({ user, missions, toggleMissionsModal, handleUp
                         activeScreen === "missions" &&
                         <>
                             <div className="h-[2px] w-[90%] m-auto bg-black mb-4"></div>            
-                            <div className="px-2">
+                            <div className="px-2 w-full">
                                 { missions.map((mission, index) => {
                                     return <Mission 
                                     key={ index } 
@@ -205,10 +187,9 @@ export default function TaskList({ user, missions, toggleMissionsModal, handleUp
                                     mission={ mission } 
                                     handleUpdateUser={ handleUpdateUser } 
                                     followMission={ followMission } 
-                                    listenMission={ listenMission }
+                                    createMission={ createMission }
                                     watchMission={ watchMission }
                                     findMission={ findMission }
-                                    createMission={ createMission }
                                 />
                                 })}
                             </div>    
@@ -216,53 +197,40 @@ export default function TaskList({ user, missions, toggleMissionsModal, handleUp
                         </>
                     }
                     {
-                        activeScreen === "video" &&
+                        activeScreen === "create" &&
                         <>
-                            <div className="w-full mt-8 flex flex-col items-center justify-center max-w-full">
-                                <p className="font-eurostile text-xs mb-4">MAMACITA OFFICIAL LYRIC VIDEO</p>
-                                <YouTube 
-                                    videoId="Ppu8TB3Mc-Q"
-                                    opts={{
-                                        width: "325",
-                                        height: "325"
-                                    }}
-                                    onPlay={() => {
-                                        console.log('video playing')
-                                    }}
-                                    onPause={() => {
-                                        console.log('video paused')
-                                    }}    
-                                    onEnd={() => {
-                                        alert('you finished the video!')
-                                    }}
-                                />
+                            <div className="px-2 w-full mt-4 flex flex-col items-center">
+                            <p className="font-eurostile text-xs mb-4">PLAYLIST QUIZ</p>
+                            <Create />
+                            <div className="text-center w-40 border-2 border-white py-1 px-1 rounded-full bg-[rgba(0,0,0,0.075)] hover:cursor-pointer" onClick={ () => setActiveScreen('missions') }>
+                                <p className="font-eurostile text-[9px] text-center">GO BACK</p>
+                            </div>
+                            </div>
+                        </>
+                    }
+                    {
+                        activeScreen === "watch" &&
+                        <>
+                        <div className="px-2 w-full mt-4 flex flex-col items-center">
+                        <p className="font-eurostile text-xs mb-4">MAMACITA OFFICIAL LYRIC VIDEO</p>
+                                <Watch />
                                 <div className="text-center w-40 border-2 border-white py-1 px-1 rounded-full bg-[rgba(0,0,0,0.075)] hover:cursor-pointer" onClick={ () => setActiveScreen('missions') }>
                                     <p className="font-eurostile text-[9px] text-center">GO BACK</p>
                                 </div>
                             </div>
                         </>
                     }
-                    { activeScreen === "map" &&
+                    { activeScreen === "find" &&
                         <>
-                            <div className="w-full mt-8 flex flex-col items-center justify-center max-w-full">
-                            <Map />
+                            <div className="px-2 w-full mt-4 flex flex-col items-center">
+                            <p className="font-eurostile text-xs mb-4">DIGITAL DROP POINTS</p>
+                            <Find />
                             <div className="text-center w-40 border-2 border-white py-1 px-1 rounded-full bg-[rgba(0,0,0,0.075)] hover:cursor-pointer" onClick={ () => setActiveScreen('missions') }>
                                 <p className="font-eurostile text-[9px] text-center">GO BACK</p>
                             </div>
                             </div>
                         </>
 
-                    }
-                    {
-                        activeScreen === "create" &&
-                        <>
-                            <div className="w-full mt-8 flex flex-col items-center justify-center max-w-full">
-                            <Quiz />
-                            <div className="text-center w-40 border-2 border-white py-1 px-1 rounded-full bg-[rgba(0,0,0,0.075)] hover:cursor-pointer" onClick={ () => setActiveScreen('missions') }>
-                                <p className="font-eurostile text-[9px] text-center">GO BACK</p>
-                            </div>
-                            </div>
-                        </>
                     }
                 </div>
             </div>

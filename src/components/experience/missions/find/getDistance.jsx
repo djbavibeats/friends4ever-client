@@ -1,4 +1,4 @@
-export const getDistance = (userLat, userLng, dropLat, dropLng, dropName, source) => {
+export const getDistance = (userLat, userLng, dropLat, dropLng, dropName) => {
     const lat1 = userLat
     const lon1 = userLng
     const lat2 = dropLat
@@ -15,10 +15,18 @@ export const getDistance = (userLat, userLng, dropLat, dropLng, dropName, source
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
     const d = R * c; // in metres
-    if (source === "manual") {
-        console.log(`You are ${d.toFixed(2)} meters from ${dropName}`)
-    }
-    if (d < 300) {
-        console.log(`close enough to ${dropName}`)
+
+    if (d < 100) {
+        return {
+            "inRange": true,
+            "message": `You have arrived at ${dropName}`,
+            "distance": `${d.toFixed(0)} meters away.`
+        }
+    } else {
+        return {
+            "inRange": false,
+            "message": `Too far away from ${dropName}`,
+            "distance": `${d.toFixed(0)} meters away.`
+        }
     }
 }

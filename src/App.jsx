@@ -9,9 +9,8 @@ import Loading from './components/core/loading'
 import Intro from './components/intro/intro'
 import EmailSignup from './components/emailAuth/signup'
 import EmailAuth from './components/emailAuth/auth'
-import Test from './components/test'
 
-import Bracelet from './components/bracelet'
+import Bracelet from './components/experience'
 
 // Production
 const url = 'https://friends4ever-server.onrender.com'

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import drops from './drops.js'
 import { getDistance } from './getDistance.jsx'
 
-export const usePosition = (watch) => {
+export const usePosition = ( watch ) => {
     const settings = {
         enableHighAccuracy: false,
         maximumAge: Infinity,
@@ -12,14 +12,21 @@ export const usePosition = (watch) => {
     const [ position, setPosition ] = useState({})
     const [ error, setError ] = useState(null)
 
-    const onChange = ({ coords }) => {
-        drops.map(drop => {
-            getDistance(coords.latitude, coords.longitude, drop.latitude, drop.longitude, drop.name, "auto")
-        })
+    const onChange = ({ coords, method }) => {  
+        console.log('===== BEGIN CHANGE IN POSITION FUNCTION =====')
+        for (var i = 0; i < drops.length; i++) {
+            const distance = getDistance(coords.latitude, coords.longitude, drops[i].latitude, drops[i].longitude, drops[i].name)
+            console.log(distance)
+            if (distance.inRange === true) { 
+                alert(`${distance.message}`)
+                break
+            }
+        }
         setPosition({
             latitude: coords.latitude,
             longitude: coords.longitude
         })
+        console.log('===== END CHANGE IN POSITION FUNCTION =====')
     }
 
     const onError = (error) => {
@@ -28,7 +35,6 @@ export const usePosition = (watch) => {
 
     useEffect(() => {
         const geo = navigator.geolocation
-        console.log('update settings')
         if (!geo) {
             setError('geolocation not supported')
             return

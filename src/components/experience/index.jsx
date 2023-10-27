@@ -4,14 +4,13 @@ import { Html, useProgress, Environment } from '@react-three/drei'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faClipboardListCheck, faCamera } from "@fortawesome/pro-regular-svg-icons"
 
-import FriendshipBracelet from './FriendshipBracelet'
-import TestBracelet from '../test/TestBracelet'
+import FriendshipBracelet from './Experience'
 import TaskList from './TaskList.jsx'
 
 // Production
-const url = 'https://friends4ever-server.onrender.com'
+// const url = 'https://friends4ever-server.onrender.com'
 // Development
-// const url = 'http://localhost:5000'
+const url = 'http://localhost:5000'
 
 function Loader() {
     const { progress } = useProgress()
@@ -75,7 +74,7 @@ export default function Bracelet({ user, handlePopulateUser, handleUpdateUser, a
             </div>
         </div>
         <div className="h-2/6 flex flex-col items-center justify-center relative z-10 p-8">
-            <p className="font-eurostile text-2xl text-center leading-[1.8rem] tracking-[.2rem]">{ missionsCompleted } / 5</p>
+            <p className="font-eurostile text-2xl text-center leading-[1.8rem] tracking-[.2rem]">{ missionsCompleted } / 4</p>
             <p className="font-eurostile text-xs text-center leading-[1.8rem] tracking-[.2rem] mb-4">CHARMS COLLECTED</p>
             <button className="flex items-center font-eurostile text-sm justify-center border-2 border-white p-2 w-64 hover:cursor-pointer" onClick={ toggleMissionsModal }>
                 VIEW MISSIONS <FontAwesomeIcon className="ml-2" icon={ faClipboardListCheck } />

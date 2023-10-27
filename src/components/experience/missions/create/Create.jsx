@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import questions from './questions.js'
 
-export default function Quiz() {
+export default function Create() {
     const [ color, setColor ] = useState(null)
     const [ animal, setAnimal ] = useState(null)
     const [ temperature, setTemperature ] = useState(null)
