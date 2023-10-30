@@ -8,9 +8,9 @@ import FriendshipBracelet from './Experience'
 import TaskList from './TaskList.jsx'
 
 // Production
-// const url = 'https://friends4ever-server.onrender.com'
+const url = 'https://friends4ever-server.onrender.com'
 // Development
-const url = 'http://localhost:5000'
+// const url = 'http://localhost:5000'
 
 function Loader() {
     const { progress } = useProgress()

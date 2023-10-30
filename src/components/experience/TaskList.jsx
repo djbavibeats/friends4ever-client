@@ -7,30 +7,20 @@ import Watch from './missions/watch/Watch'
 import Find from './missions/find/Find'
 
 // Production
-// const url = 'https://friends4ever-server.onrender.com'
+const url = 'https://friends4ever-server.onrender.com'
 // Development
-const url = 'http://localhost:5000'
+// const url = 'http://localhost:5000'
 
-const Mission = ({ mission, user, handleUpdateUser, followMission, createMission, watchMission, findMission }) => {
+const Mission = ({ mission, user, handleUpdateUser, followMission, toggleMission }) => {
     const [ missionDetails, setMissionDetails ] = useState(null)
 
     function executemission(name) {
-        console.log(name)
         switch (name) {
             case ('follow'):
                 followMission(user, mission)
                 break
-            case ('create'):
-                createMission(user, mission)
-                break
-            case ('watch'):
-                watchMission(user, mission)
-                break
-            case ('find'):
-                findMission(user, mission)
-                break
             default:
-                console.log('default...')
+                toggleMission(mission)
                 break
         }
     }
@@ -151,26 +141,15 @@ export default function TaskList({ user, missions, toggleMissionsModal, handleUp
             }
     }
 
-    function createMission(user, mission) {
-        setActiveScreen('create')
-    }
-
-    function watchMission(user, mission) {
-        setActiveScreen('watch')
-    }
-
-    function findMission(user, mission) {
-        setActiveScreen('find')
+    function toggleMission(mission) {
+        setActiveScreen(mission.name)
     }
 
 
     return (<>
         <div className="flex fixed top-0 left-0 right-0 h-full w-screen p-1 bg-[rgba(0,0,0,1)] md:bg-[rgba(0,0,0,0.25)] z-20 overflow-x-hidden overflow-y-auto">
-        {/* <div className="fixed top-0 left-0 right-0 z-50 w-full overflow-x-hidden overflow-y-auto md:inset-0 h-full max-h-full"> */}
-
             <div className="relative top-0 left-0 right-0 bottom-0 flex items-start md:items-center text-white modal-container w-[100%] max-w-full">
-            {/* <div className="relative w-full max-w-2xl max-h-full p-4"> */}
-                <div className="relative bg-black task-list-modal min-h-full md:min-h-[700px] py-4 px-2 border-2 border-color-white md:w-[100%] md:max-w-[500px] min-w-[330px]">
+                <div className="flex flex-col relative bg-black task-list-modal min-h-full min-w-full md:min-h-[700px] py-4 px-2 border-2 border-color-white md:w-[100%] md:max-w-[500px] md:min-w-[330px]">
                     <div className="absolute top-3 right-3 text-xs border-2 border-white rounded-full px-[6px] py-1 font-bold bg-[rgba(0,0,0,0.25)] hover:cursor-pointer" onClick={ toggleMissionsModal }>
                         <div className="font-eurostile">X</div>
                     </div>
@@ -187,9 +166,7 @@ export default function TaskList({ user, missions, toggleMissionsModal, handleUp
                                     mission={ mission } 
                                     handleUpdateUser={ handleUpdateUser } 
                                     followMission={ followMission } 
-                                    createMission={ createMission }
-                                    watchMission={ watchMission }
-                                    findMission={ findMission }
+                                    toggleMission={ toggleMission }
                                 />
                                 })}
                             </div>    
@@ -199,7 +176,7 @@ export default function TaskList({ user, missions, toggleMissionsModal, handleUp
                     {
                         activeScreen === "create" &&
                         <>
-                            <div className="px-2 w-full mt-4 flex flex-col items-center">
+                            <div className="w-full mt-4 flex flex-col items-center justify-between flex-grow">
                             <p className="font-eurostile text-xs mb-4">PLAYLIST QUIZ</p>
                             <Create />
                             <div className="text-center w-40 border-2 border-white py-1 px-1 rounded-full bg-[rgba(0,0,0,0.075)] hover:cursor-pointer" onClick={ () => setActiveScreen('missions') }>
@@ -211,8 +188,8 @@ export default function TaskList({ user, missions, toggleMissionsModal, handleUp
                     {
                         activeScreen === "watch" &&
                         <>
-                        <div className="px-2 w-full mt-4 flex flex-col items-center">
-                        <p className="font-eurostile text-xs mb-4">MAMACITA OFFICIAL LYRIC VIDEO</p>
+                            <div className="w-full mt-4 flex flex-col items-center justify-between flex-grow">
+                            <p className="font-eurostile text-xs mb-4">MAMACITA OFFICIAL LYRIC VIDEO</p>
                                 <Watch />
                                 <div className="text-center w-40 border-2 border-white py-1 px-1 rounded-full bg-[rgba(0,0,0,0.075)] hover:cursor-pointer" onClick={ () => setActiveScreen('missions') }>
                                     <p className="font-eurostile text-[9px] text-center">GO BACK</p>
@@ -222,7 +199,7 @@ export default function TaskList({ user, missions, toggleMissionsModal, handleUp
                     }
                     { activeScreen === "find" &&
                         <>
-                            <div className="px-2 w-full mt-4 flex flex-col items-center">
+                            <div className="w-full mt-4 flex flex-col items-center justify-between flex-grow">
                             <p className="font-eurostile text-xs mb-4">DIGITAL DROP POINTS</p>
                             <Find />
                             <div className="text-center w-40 border-2 border-white py-1 px-1 rounded-full bg-[rgba(0,0,0,0.075)] hover:cursor-pointer" onClick={ () => setActiveScreen('missions') }>

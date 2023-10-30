@@ -88,3 +88,30 @@ body {
     width: 325px !important;
     height: 325px !important;
 }
+
+.question-wrapper {
+    flex: 0 0 100%;
+}
+
+input[type="radio"] {
+    padding: 2px;
+    border: 2px solid white !important;
+}
+
+input[type="radio"]:checked {
+
+}
+
+input[type="radio"] {
+    position: absolute;
+}
+
+input[type="radio"] + label {
+    width: 100%;
+    display: block;
+}
+input[type="radio"]:checked + label {
+    background: #ffffff;
+    color: #000000;
+    width: 100%;
+}

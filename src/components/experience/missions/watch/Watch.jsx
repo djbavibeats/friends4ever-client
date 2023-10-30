@@ -1,6 +1,12 @@
 import YouTube from "react-youtube"
+import { useEffect } from "react"
 
 export default function Watch() {
+    useEffect(() => {
+        console.log('Rendering Watch Mission')
+        return () => { console.log('Unmounting Watch Mission') }
+    }, [])
+
     return (<>
         <div className="flex items-center flex-col px-2 w-full">
         <YouTube 

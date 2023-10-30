@@ -3,9 +3,9 @@ import { useState, useEffect } from 'react'
 import drops from './drops.js'
 import { getDistance } from './getDistance.jsx'
 
-export const usePosition = ( watch ) => {
+export const usePosition = ({ watch }) => {
     const settings = {
-        enableHighAccuracy: false,
+        enableHighAccuracy: true,
         maximumAge: Infinity,
         timeout: 5000
     }
@@ -13,10 +13,10 @@ export const usePosition = ( watch ) => {
     const [ error, setError ] = useState(null)
 
     const onChange = ({ coords, method }) => {  
-        console.log('===== BEGIN CHANGE IN POSITION FUNCTION =====')
+        // console.log('===== BEGIN CHANGE IN POSITION FUNCTION =====')
         for (var i = 0; i < drops.length; i++) {
             const distance = getDistance(coords.latitude, coords.longitude, drops[i].latitude, drops[i].longitude, drops[i].name)
-            console.log(distance)
+            // console.log(distance)
             if (distance.inRange === true) { 
                 alert(`${distance.message}`)
                 break
@@ -26,7 +26,7 @@ export const usePosition = ( watch ) => {
             latitude: coords.latitude,
             longitude: coords.longitude
         })
-        console.log('===== END CHANGE IN POSITION FUNCTION =====')
+        // console.log('===== END CHANGE IN POSITION FUNCTION =====')
     }
 
     const onError = (error) => {
@@ -40,11 +40,14 @@ export const usePosition = ( watch ) => {
             return
         }
 
-        if (watch) {
+        if (watch === true) {
             const watcher = geo.watchPosition(onChange, onError, settings)
             return () => geo.clearWatch(watcher)
         } else {
-            geo.getCurrentPosition(onChange, onError, settings)
+            let getPosition
+            getPosition = setInterval(function () {
+                geo.getCurrentPosition(onChange, onError, settings)
+            }, 5000)
         }
     }, [])
 
