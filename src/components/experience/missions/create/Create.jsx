@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { gsap } from 'gsap'
 
 import questions from './questions.js'
 
@@ -7,13 +8,31 @@ export default function Create() {
     const [ update, setUpdate ] = useState(false)
     const [ color, setColor ] = useState(null)
     const [ userSelections, setUserSelections ] = useState(questions)
-    
+    const [ zeroCount, setZeroCount ] = useState(0)
+    const [ oneCount, setOneCount ] = useState(0)
+    const [ twoCount, setTwoCount ]= useState(0)
+    const zero = useRef()
+    const one = useRef()
+    const two = useRef()
+
     useEffect(() => {
         console.log('Rendering Create Mission')
         return () => { 
-            console.log('Unmounting Create Mission') 
+            console.log('Unmounting Create Mission')
         }
     }, [])
+    
+    useEffect(() => {
+        setZeroCount(userSelections.filter(question => question.selection === 0).length)
+        setOneCount(userSelections.filter(question => question.selection === 1).length)
+        setTwoCount(userSelections.filter(question => question.selection === 2).length)
+    }, [ update ])
+
+    useEffect(() => {
+        gsap.to(zero.current, { opacity: zeroCount / 11 })
+        gsap.to(one.current, { opacity: oneCount / 11 })
+        gsap.to(two.current, { opacity: twoCount / 11 })
+    }, [ zeroCount, oneCount, twoCount ])
     
     function handleRadioChange(questionIndex, answerIndex) {
         let copy = userSelections
@@ -29,6 +48,10 @@ export default function Create() {
     function decrementPage() {
         setPage(page - 1)
     }
+
+    function getResults() {
+
+    }
     return (<>
         <div className="items-center flex-col flex px-2 w-full relative">
             <div className="w-full">
@@ -41,8 +64,21 @@ export default function Create() {
                     }}
                 }) }
                 {/* Progress Indicator */}
-                <div className="h h-80 border-2"> 
-                    
+                <div className="h h-80 w-80 m-auto border-2 relative"> 
+                    <div ref={ zero } className="count-region zero absolute p-2 border-2 rounded-[100%] top-[10%] left-1/4 w-1/2 h-1/2 flex items-center justify-center">
+                        Zero: { zeroCount }
+                    </div>
+                    <div ref={ one } className="count-region one absolute p-2 border-2 rounded-[100%] bottom-[10%] left-[10%] w-1/2 h-1/2 flex items-center justify-center">
+                        One: { oneCount }
+                    </div>
+                    <div ref={ two } className="count-region two absolute p-2 border-2 rounded-[100%] bottom-[10%] right-[10%] w-1/2 h-1/2 flex items-center justify-center">
+                        Two: { twoCount }
+                    </div>
+                    { questions.map((question, index) => {
+                        { if (index === page) {
+                            return <p key={ index }>{ index += 1 } / 11</p>
+                        }}
+                    })}
                 </div>
                 {/* Question Body */}
                 { questions.map((question, questionIndex) => {
@@ -55,7 +91,6 @@ export default function Create() {
                             {/* Answers */}
                             <div className="flex flex-col">
                                 { question.answers.map((answer, answerIndex) => {
-                                    console.log(answer.weight, answerIndex)
                                     return <div key={ answerIndex }>
                                         <input type="radio"
                                             className="mr-2 border-2 border-color-red-500 invisible"
@@ -77,9 +112,8 @@ export default function Create() {
             </div>
             <div className="flex w-full justify-between items-stretch space-between mb-4">
                 { page !== 0 ? <button className="font-eurostile text-[9px] text-center w-28 border-2 border-white py-1 px-1 rounded-full bg-[rgba(0,0,0,0.075)] hover:cursor-pointer" onClick={ decrementPage }>PREVIOUS</button> : <div></div> }
-                <button className="font-eurostile text-[9px] text-center w-28 border-2 border-white py-1 px-1 rounded-full bg-[rgba(0,0,0,0.075)] hover:cursor-pointer" onClick={ incrementPage }>
-                    NEXT
-                </button>
+                { page !== 10 ? <button className="font-eurostile text-[9px] text-center w-28 border-2 border-white py-1 px-1 rounded-full bg-[rgba(0,0,0,0.075)] hover:cursor-pointer" onClick={ incrementPage }>NEXT</button> : null }
+                { page === 10 ? <button className="font-eurostile text-[9px] text-center w-28 border-2 border-white py-1 px-1 rounded-full bg-[rgba(0,0,0,0.075)] hover:cursor-pointer" onClick={ getResults }>GET RESULTS</button> : null }
             </div>
             {/* <div className="text-center w-40 border-2 border-white py-1 px-1 rounded-full bg-[rgba(0,0,0,0.075)] hover:cursor-pointer mb-2" onClick={ handleSubmit }>
                 <p className="font-eurostile text-[9px] text-center">SUBMIT</p>

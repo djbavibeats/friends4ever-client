@@ -14,7 +14,7 @@ export const usePosition = ({ watch }) => {
 
     const onChange = ({ coords, method }) => {  
         // console.log('===== BEGIN CHANGE IN POSITION FUNCTION =====')
-        alert('position change!')
+        // alert('position change!')
         for (var i = 0; i < drops.length; i++) {
             const distance = getDistance(coords.latitude, coords.longitude, drops[i].latitude, drops[i].longitude, drops[i].name)
             // console.log(distance)

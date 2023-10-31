@@ -19,6 +19,8 @@ export default function Find() {
     const [ autoActive, setAutoActive ] = useState(true)
 
     const { latitude, longitude, error } = usePosition({ watch: false, active: autoActive })
+    const [ autoLat, setAutoLat ] = useState(null)
+    const [ autoLng, setAutoLng ] = useState(null)
     const manualLat = useRef()
     const manualLng = useRef()
 
@@ -68,6 +70,8 @@ export default function Find() {
                     .setLngLat([ drop.longitude, drop.latitude ])
                     .addTo(map.current)
             })
+            setAutoLat(latitude)
+            setAutoLng(longitude)
 
         } else {
             console.log('Map is not ready')
@@ -81,7 +85,7 @@ export default function Find() {
             if (map.current) {
                 map.current.easeTo({ 
                     center: [ longitude, latitude ], 
-                    zoom: 15,
+                    // zoom: 15,
                     speed: 0.2
                 })
                 user.current.setLngLat([ longitude, latitude ])
@@ -92,6 +96,8 @@ export default function Find() {
                         break
                     }
                 }
+                setAutoLat(latitude)
+                setAutoLng(longitude)
             }
         } else {
             console.log('Tracking paused')
@@ -106,7 +112,7 @@ export default function Find() {
         if (map) {
             map.current.easeTo({ 
                 center: [ manualLng.current.value, manualLat.current.value ], 
-                zoom: 15,
+                // zoom: 15,
                 speed: 0.2
             })
         }
@@ -134,10 +140,10 @@ export default function Find() {
             
             <div className="flex mb-8">
                 <label className="relative">
-                    <div className="flex text-center bg-transparent placeholder-white outline-none  text-white items-center justify-center border-2 p-2 w-32">{ longitude ? longitude.toFixed(3) : '' }</div>
+                    <div className="flex text-center bg-transparent placeholder-white outline-none  text-white items-center justify-center border-2 p-2 w-32">{ autoLng ? autoLng.toFixed(3) : '' }</div>
                 </label>
                 <label className="relative">
-                    <div className="flex text-center bg-transparent placeholder-white outline-none  items-center justify-center border-2 p-2 w-32">{ latitude ? latitude.toFixed(3) : '' }</div>
+                    <div className="flex text-center bg-transparent placeholder-white outline-none  items-center justify-center border-2 p-2 w-32">{ autoLat ? autoLat.toFixed(3) : '' }</div>
                 </label>
             </div>
             <p className="mb-2">Set Coordinates</p>
