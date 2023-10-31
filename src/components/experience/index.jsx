@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, Suspense } from 'react'
-import { Canvas, useThree } from '@react-three/fiber'
+import { Canvas } from '@react-three/fiber'
 import { Html, useProgress, Environment } from '@react-three/drei'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faClipboardListCheck, faCamera } from "@fortawesome/pro-regular-svg-icons"
@@ -26,6 +26,7 @@ export default function Bracelet({ user, handlePopulateUser, handleUpdateUser, a
     const [ missionsModalVisible, setMissionsModalVisible ] = useState(false)
     const [ missionsCompleted, setMissionsCompleted ] = useState(0)
     const canvas = useRef()
+    const [ test, setTest ] = useState(false)
 
     const childFunc = useRef(null)
 
@@ -33,7 +34,9 @@ export default function Bracelet({ user, handlePopulateUser, handleUpdateUser, a
         setMissionsCompleted(user.missions.filter((mission) => mission.completed === true).length)
     }, [ user ])
 
+
     const toggleMissionsModal = () => {
+        console.log('toggle')
         setMissionsModalVisible(!missionsModalVisible)
     }
 
@@ -48,6 +51,7 @@ export default function Bracelet({ user, handlePopulateUser, handleUpdateUser, a
         <div className="aspect-square w-full relative">
             <Canvas
                 ref={ canvas }
+                // frameloop="demand"
                 id="canvas-wrapper-id"
                 gl={{ preserveDrawingBuffer: true }}
                 camera={ { 
@@ -59,7 +63,12 @@ export default function Bracelet({ user, handlePopulateUser, handleUpdateUser, a
                 } }
             >
                 <Suspense fallback={<Loader />}>
-                    <FriendshipBracelet user={ user } childFunc={ childFunc } missionsCompleted={ missionsCompleted } />
+                    <FriendshipBracelet 
+                        user={ user } 
+                        childFunc={ childFunc } 
+                        missionsCompleted={ missionsCompleted } 
+                        missionsModalVisible={ missionsModalVisible }
+                    />
                 </Suspense>
                 <Environment 
                     preset="city"

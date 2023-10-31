@@ -10,6 +10,10 @@ export default function FriendshipBracelet(props) {
     const { gl } = useThree()
     const sharePanel = useRef()
 
+    useFrame(() => {
+        bracelet.current.rotation.y += 0.01
+    })
+
     useEffect(() => {
         setMaterialColor('#d0cece')
     }, [])
@@ -125,9 +129,6 @@ export default function FriendshipBracelet(props) {
         }
     }
 
-    useFrame(() => {
-        bracelet.current.rotation.y += 0.01
-    })
 
     return (<>
         <OrbitControls />

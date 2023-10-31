@@ -1,7 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
+import { Canvas, useThree, extend, useFrame } from '@react-three/fiber'
+import { OrbitControls, shaderMaterial } from '@react-three/drei'
+import * as THREE from 'three'
 
 import questions from './questions.js'
+
+import ShaderObject from './ShaderObject.jsx'
 
 export default function Create() {
     const [ page, setPage ] = useState(0)
@@ -11,9 +16,9 @@ export default function Create() {
     const [ zeroCount, setZeroCount ] = useState(0)
     const [ oneCount, setOneCount ] = useState(0)
     const [ twoCount, setTwoCount ]= useState(0)
-    const zero = useRef()
-    const one = useRef()
-    const two = useRef()
+    // const zero = useRef()
+    // const one = useRef()
+    // const two = useRef()
 
     useEffect(() => {
         console.log('Rendering Create Mission')
@@ -29,9 +34,9 @@ export default function Create() {
     }, [ update ])
 
     useEffect(() => {
-        gsap.to(zero.current, { opacity: zeroCount / 11 })
-        gsap.to(one.current, { opacity: oneCount / 11 })
-        gsap.to(two.current, { opacity: twoCount / 11 })
+        // gsap.to(zero.current, { opacity: zeroCount / 11 })
+        // gsap.to(one.current, { opacity: oneCount / 11 })
+        // gsap.to(two.current, { opacity: twoCount / 11 })
     }, [ zeroCount, oneCount, twoCount ])
     
     function handleRadioChange(questionIndex, answerIndex) {
@@ -64,8 +69,8 @@ export default function Create() {
                     }}
                 }) }
                 {/* Progress Indicator */}
-                <div className="h h-80 w-80 m-auto border-2 relative"> 
-                    <div ref={ zero } className="count-region zero absolute p-2 border-2 rounded-[100%] top-[10%] left-1/4 w-1/2 h-1/2 flex items-center justify-center">
+                <div className="h h-80 w-80 m-auto relative"> 
+                    {/* <div ref={ zero } className="count-region zero absolute p-2 border-2 rounded-[100%] top-[10%] left-1/4 w-1/2 h-1/2 flex items-center justify-center">
                         Zero: { zeroCount }
                     </div>
                     <div ref={ one } className="count-region one absolute p-2 border-2 rounded-[100%] bottom-[10%] left-[10%] w-1/2 h-1/2 flex items-center justify-center">
@@ -73,7 +78,15 @@ export default function Create() {
                     </div>
                     <div ref={ two } className="count-region two absolute p-2 border-2 rounded-[100%] bottom-[10%] right-[10%] w-1/2 h-1/2 flex items-center justify-center">
                         Two: { twoCount }
-                    </div>
+                    </div> */}
+                    <Canvas>
+                        <ambientLight intensity={ 1.0 } color={ '#ffffff'}  />
+                        <ShaderObject 
+                            zeroCount={ zeroCount }
+                            oneCount={ oneCount }
+                            twoCount={ twoCount }
+                        />
+                    </Canvas>
                     { questions.map((question, index) => {
                         { if (index === page) {
                             return <p key={ index }>{ index += 1 } / 11</p>
