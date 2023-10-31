@@ -2,7 +2,7 @@ import { useRef, useMemo, useState } from 'react'
 import { extend, useFrame } from '@react-three/fiber'
 import { shaderMaterial } from '@react-three/drei'
 import * as THREE from 'three'
-import { useControls } from 'leva'
+// import { useControls } from 'leva'
 import { useEffect } from 'react'
 
 const ShaderObjectMaterial = shaderMaterial(
@@ -44,12 +44,12 @@ extend({ ShaderObjectMaterial })
 
 export default function ShaderObject({ zeroCount, oneCount, twoCount }) {
     const mesh = useRef()
-    const { rotation } = useControls({
-        rotation: {
-            value: { x: - 0.75, y: - 0.35, z: - 0.75 },
-            step: 0.01
-        }
-    })
+    // const { rotation } = useControls({
+    //     rotation: {
+    //         value: { x: - 0.75, y: - 0.35, z: - 0.75 },
+    //         step: 0.01
+    //     }
+    // })
 
     
     
@@ -72,7 +72,7 @@ export default function ShaderObject({ zeroCount, oneCount, twoCount }) {
     })  
 
     return <>
-        <mesh ref={ mesh } position={[ -0.5, 0.95, 0 ]} rotation={[ rotation.x, rotation.y, rotation.z ]} scale={ 5.0 }>
+        <mesh ref={ mesh } position={[ -0.5, 0.95, 0 ]} rotation={[ - 0.75, - 0.35, - 0.75 ]} scale={ 5.0 }>
             <planeGeometry args={[ 1, 1, 32, 32 ]} />
             <shaderObjectMaterial 
                 uniforms={ uniforms }
